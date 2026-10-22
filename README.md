@@ -34,3 +34,13 @@
 | appVersion | **v26.7.2** |
 | 来源 | [NVIDIA GPU Operator](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html) |
 | 镜像清单 | [docs/gpu-operator-images.md](docs/gpu-operator-images.md) |
+
+## Ingress NGINX
+
+| 项 | 值 |
+| --- | --- |
+| Chart | [ingress-nginx](https://github.com/kubernetes/ingress-nginx/tree/main/charts/ingress-nginx) |
+| Chart 版本 | **4.15.1**（仓库文件：`charts/ingress-nginx-4.15.1.tgz`） |
+| appVersion | **1.15.1** |
+| 来源 | [kubernetes/ingress-nginx](https://github.com/kubernetes/ingress-nginx) |
+| 镜像清单 | [docs/ingress-nginx-images.md](docs/ingress-nginx-images.md) |
