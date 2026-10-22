@@ -11,6 +11,7 @@
 | DOC-001 | 应用商店 Chart 添加说明 | 应用商店 / Chart 管理 | [appstore-chart-guide.md](./appstore-chart-guide.md) |
 | DOC-002 | Prometheus（Operator）镜像清单 | 应用商店 / 镜像 | [prometheus-images.md](./prometheus-images.md) |
 | DOC-003 | Velero 镜像清单 | 应用商店 / 镜像 | [velero-images.md](./velero-images.md) |
+| DOC-004 | GPU Operator 镜像清单 | 应用商店 / 镜像 | [gpu-operator-images.md](./gpu-operator-images.md) |
 
 ## 新增文档规范
 
