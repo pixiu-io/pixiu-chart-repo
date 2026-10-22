@@ -31,7 +31,7 @@
 ### 2. 处理镜像（离线 / 私有仓必做）
 
 - 将 values 中各组件 `image` 改为目标集群可达的私有仓库地址（离线部署需提前推送）
-- 参考同目录镜像文档（如 [prometheus-images.md](./prometheus-images.md)、[velero-images.md](./velero-images.md)、[gpu-operator-images.md](./gpu-operator-images.md)）的「mirror 镜像」列与「原生镜像」清单
+- 参考同目录镜像文档（如 [prometheus-images.md](./prometheus-images.md)、[velero-images.md](./velero-images.md)、[gpu-operator-images.md](./gpu-operator-images.md)、[ingress-nginx-images.md](./ingress-nginx-images.md)）的「mirror 镜像」列与「原生镜像」清单
 - 验证：`helm template <包> -n <ns> | grep image:`，确认无上游不可达地址
 
 ### 3. 上传到应用商店
