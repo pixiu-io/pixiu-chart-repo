@@ -30,3 +30,16 @@
 镜像清单: [docs/velero-images.md](docs/velero-images.md)
 
 上游来源: [vmware-tanzu/helm-charts](https://github.com/vmware-tanzu/helm-charts)
+
+## GPU Operator
+
+| 项 | 值 |
+| --- | --- |
+| Chart | [gpu-operator](https://github.com/NVIDIA/gpu-operator) |
+| Chart 版本 | **v26.7.2**（仓库文件：`charts/gpu-operator-v26.7.2.tgz`） |
+| appVersion | **v26.7.2** |
+| 来源 | [NVIDIA GPU Operator](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html) |
+
+镜像清单: [docs/gpu-operator-images.md](docs/gpu-operator-images.md)
+
+上游来源: [helm.ngc.nvidia.com/nvidia](https://helm.ngc.nvidia.com/nvidia) / OCI `oci://nvcr.io/nvidia/cloud-native-charts/gpu-operator`
