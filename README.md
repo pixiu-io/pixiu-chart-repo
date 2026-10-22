@@ -1,14 +1,19 @@
 # Pixiu 应用商店仓库
 
-本仓库存放 Pixiu 应用商店使用的 Helm Chart 包。
+本仓库存放 Pixiu 应用商店使用的 Chart 包。
 
-## Prometheus
+文档索引: [docs/README.md](docs/README.md)（应用商店 Chart 添加说明）
 
-| Chart | 版本 | 说明 |
-| --- | --- | --- |
-| `kube-prometheus-stack` | 92.11.0（另保留 65.1.1） | Operator 栈，生产推荐 |
-| `prometheus` | 25.10.0 | 经典非 Operator 部署 |
+# 组件列表
+## Prometheus Operator
 
-上游来源：[prometheus-community/helm-charts](https://github.com/prometheus-community/helm-charts/)
+| 项 | 值 |
+| --- | --- |
+| Chart | [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) |
+| Chart 版本 | **92.11.0**（仓库文件：`charts/kube-prometheus-stack-92.11.0.tgz`） |
+| appVersion | **v0.94.1**（Prometheus Operator 版本） |
+| 来源 | [prometheus-community/helm-charts](https://github.com/prometheus-community/helm-charts/) |
 
-**镜像清单（离线/私有仓必备）** → [docs/prometheus-images.md](docs/prometheus-images.md)
+镜像清单: [docs/prometheus-images.md](docs/prometheus-images.md)
+
+上游来源: [prometheus-community/helm-charts](https://github.com/prometheus-community/helm-charts/)
