@@ -4,8 +4,6 @@
 
 ## Prometheus
 
-推荐使用 **Prometheus Operator** 方式部署，对应 Chart：`kube-prometheus-stack`。
-
 | Chart | 版本 | 说明 |
 | --- | --- | --- |
 | `kube-prometheus-stack` | 92.11.0（另保留 65.1.1） | Operator 栈，生产推荐 |
