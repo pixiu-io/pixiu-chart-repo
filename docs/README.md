@@ -1,6 +1,6 @@
 # 文档索引
 
-> 最后更新：2026-10-23　|　维护：平台组
+> 最后更新：2026-10-24　|　维护：平台组
 
 每个主题对应一个独立 Markdown 文档，本文件仅作索引。
 
@@ -13,6 +13,7 @@
 | DOC-003 | Velero 镜像清单 | 应用商店 / 镜像 | [velero-images.md](./velero-images.md) |
 | DOC-004 | GPU Operator 镜像清单 | 应用商店 / 镜像 | [gpu-operator-images.md](./gpu-operator-images.md) |
 | DOC-005 | Ingress NGINX 镜像清单 | 应用商店 / 镜像 | [ingress-nginx-images.md](./ingress-nginx-images.md) |
+| DOC-006 | MinIO 镜像清单 | 应用商店 / 镜像 | [minio-images.md](./minio-images.md) |
 
 ## 工具脚本
 
