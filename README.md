@@ -44,3 +44,13 @@
 | appVersion | **1.15.1** |
 | 来源 | [kubernetes/ingress-nginx](https://github.com/kubernetes/ingress-nginx) |
 | 镜像清单 | [docs/ingress-nginx-images.md](docs/ingress-nginx-images.md) |
+
+## MinIO
+
+| 项 | 值 |
+| --- | --- |
+| Chart | [minio](https://github.com/minio/charts/tree/master/minio) |
+| Chart 版本 | **5.4.0**（仓库文件：`charts/minio-5.4.0.tgz`） |
+| appVersion | **RELEASE.2024-12-18T13-15-44Z** |
+| 来源 | [charts.min.io](https://charts.min.io/) 官方 Helm 仓库最新稳定版 |
+| 镜像清单 | [docs/minio-images.md](docs/minio-images.md) |
