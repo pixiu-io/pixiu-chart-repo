@@ -1,6 +1,6 @@
 # 文档索引
 
-> 最后更新：2026-10-22　|　维护：平台组
+> 最后更新：2026-10-23　|　维护：平台组
 
 每个主题对应一个独立 Markdown 文档，本文件仅作索引。
 
@@ -13,6 +13,16 @@
 | DOC-003 | Velero 镜像清单 | 应用商店 / 镜像 | [velero-images.md](./velero-images.md) |
 | DOC-004 | GPU Operator 镜像清单 | 应用商店 / 镜像 | [gpu-operator-images.md](./gpu-operator-images.md) |
 | DOC-005 | Ingress NGINX 镜像清单 | 应用商店 / 镜像 | [ingress-nginx-images.md](./ingress-nginx-images.md) |
+
+## 工具脚本
+
+| 脚本 | 用途 |
+|---|---|
+| [scripts/check-chart-tgz.py](../scripts/check-chart-tgz.py) | 检查 / 清理 chart `.tgz` 中的 macOS `._*` / `.DS_Store` / `__MACOSX` 残留 |
+
+合入 `charts/*.tgz` 前执行：`python3 scripts/check-chart-tgz.py charts/*.tgz`
+
+**打包约定（详见 [appstore-chart-guide.md](./appstore-chart-guide.md)「标准流程」）**：最终包一律用 `COPYFILE_DISABLE=1 helm package ./chart`；禁止本机裸 `tar czf` 作为常规手段。
 
 ## 新增文档规范
 
