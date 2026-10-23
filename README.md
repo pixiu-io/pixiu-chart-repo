@@ -7,7 +7,6 @@
 # 组件列表
 ## Prometheus Operator
 
-| 项 | 值 |
 | --- | --- |
 | Chart | [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) |
 | Chart 版本 | **92.11.0**（仓库文件：`charts/kube-prometheus-stack-92.11.0.tgz`） |
@@ -17,7 +16,6 @@
 
 ## Velero
 
-| 项 | 值 |
 | --- | --- |
 | Chart | [velero](https://github.com/vmware-tanzu/helm-charts/tree/main/charts/velero) |
 | Chart 版本 | **12.2.1**（仓库文件：`charts/velero-12.2.1.tgz`） |
@@ -27,7 +25,6 @@
 
 ## GPU Operator
 
-| 项 | 值 |
 | --- | --- |
 | Chart | [gpu-operator](https://github.com/NVIDIA/gpu-operator) |
 | Chart 版本 | **v26.7.2**（仓库文件：`charts/gpu-operator-v26.7.2.tgz`） |
@@ -37,7 +34,6 @@
 
 ## Ingress NGINX
 
-| 项 | 值 |
 | --- | --- |
 | Chart | [ingress-nginx](https://github.com/kubernetes/ingress-nginx/tree/main/charts/ingress-nginx) |
 | Chart 版本 | **4.15.1**（仓库文件：`charts/ingress-nginx-4.15.1.tgz`） |
