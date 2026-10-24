@@ -84,3 +84,13 @@
 | appVersion | **v1.21.3** |
 | 来源 | [jetstack](https://charts.jetstack.io) 官方 Helm 仓库最新稳定版 |
 | 镜像清单 | [docs/cert-manager-images.md](docs/cert-manager-images.md) |
+
+## Longhorn
+
+| 项 | 值 |
+| --- | --- |
+| Chart | [longhorn](https://github.com/longhorn/longhorn) |
+| Chart 版本 | **1.13.0**（仓库文件：`charts/longhorn-1.13.0.tgz`） |
+| appVersion | **v1.13.0** |
+| 来源 | [charts.longhorn.io](https://charts.longhorn.io) 官方 Helm 仓库最新稳定版 |
+| 镜像清单 | [docs/longhorn-images.md](docs/longhorn-images.md) |

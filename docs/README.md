@@ -17,6 +17,7 @@
 | DOC-007 | Loki 镜像清单 | 应用商店 / 镜像 | [loki-images.md](./loki-images.md) |
 | DOC-008 | Promtail 镜像清单 | 应用商店 / 镜像 | [promtail-images.md](./promtail-images.md) |
 | DOC-009 | Cert-manager 镜像清单 | 应用商店 / 镜像 | [cert-manager-images.md](./cert-manager-images.md) |
+| DOC-010 | Longhorn 镜像清单 | 应用商店 / 镜像 | [longhorn-images.md](./longhorn-images.md) |
 
 ## 工具脚本
 
