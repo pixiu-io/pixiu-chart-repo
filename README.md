@@ -55,6 +55,36 @@
 | 来源 | [charts.min.io](https://charts.min.io/) 官方 Helm 仓库最新稳定版 |
 | 镜像清单 | [docs/minio-images.md](docs/minio-images.md) |
 
+## Loki
+
+| 项 | 值 |
+| --- | --- |
+| Chart | [loki](https://github.com/grafana/loki/tree/main/production/helm/loki) |
+| Chart 版本 | **7.5.0**（仓库文件：`charts/loki-7.5.0.tgz`） |
+| appVersion | **3.6.16**（默认镜像 tag 3.6.11） |
+| 来源 | [grafana/helm-charts](https://github.com/grafana/helm-charts) 官方 Helm 仓库最新稳定版 |
+| 镜像清单 | [docs/loki-images.md](docs/loki-images.md) |
+
+## Promtail
+
+| 项 | 值 |
+| --- | --- |
+| Chart | [promtail](https://github.com/grafana/helm-charts/tree/main/charts/promtail) |
+| Chart 版本 | **6.17.1**（仓库文件：`charts/promtail-6.17.1.tgz`） |
+| appVersion | **3.5.1** |
+| 来源 | [grafana/helm-charts](https://github.com/grafana/helm-charts) 官方 Helm 仓库最新稳定版 |
+| 镜像清单 | [docs/promtail-images.md](docs/promtail-images.md) |
+
+## Cert-manager
+
+| 项 | 值 |
+| --- | --- |
+| Chart | [cert-manager](https://github.com/cert-manager/cert-manager/tree/master/deploy/charts/cert-manager) |
+| Chart 版本 | **v1.21.3**（仓库文件：`charts/cert-manager-v1.21.3.tgz`） |
+| appVersion | **v1.21.3** |
+| 来源 | [jetstack](https://charts.jetstack.io) 官方 Helm 仓库最新稳定版 |
+| 镜像清单 | [docs/cert-manager-images.md](docs/cert-manager-images.md) |
+
 ## Longhorn
 
 | 项 | 值 |
