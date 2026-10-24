@@ -54,3 +54,13 @@
 | appVersion | **RELEASE.2024-12-18T13-15-44Z** |
 | 来源 | [charts.min.io](https://charts.min.io/) 官方 Helm 仓库最新稳定版 |
 | 镜像清单 | [docs/minio-images.md](docs/minio-images.md) |
+
+## Longhorn
+
+| 项 | 值 |
+| --- | --- |
+| Chart | [longhorn](https://github.com/longhorn/longhorn) |
+| Chart 版本 | **1.13.0**（仓库文件：`charts/longhorn-1.13.0.tgz`） |
+| appVersion | **v1.13.0** |
+| 来源 | [charts.longhorn.io](https://charts.longhorn.io) 官方 Helm 仓库最新稳定版 |
+| 镜像清单 | [docs/longhorn-images.md](docs/longhorn-images.md) |
