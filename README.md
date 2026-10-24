@@ -114,3 +114,23 @@
 | appVersion | **2.15.4**（Harbor 版本） |
 | 来源 | [helm.goharbor.io](https://helm.goharbor.io) 官方 Helm 仓库最新稳定版 |
 | 镜像清单 | [docs/harbor-images.md](docs/harbor-images.md) |
+
+## Redis Operator
+
+| 项 | 值 |
+| --- | --- |
+| Chart | [redis-operator](https://github.com/OT-CONTAINER-KIT/redis-operator) |
+| Chart 版本 | **0.27.0**（仓库文件：`charts/redis-operator-0.27.0.tgz`） |
+| appVersion | **0.27.0**（Redis Operator 版本） |
+| 来源 | [ot-container-kit.github.io/helm-charts](https://ot-container-kit.github.io/helm-charts/) 官方 Helm 仓库最新稳定版 |
+| 镜像清单 | [docs/redis-operator-images.md](docs/redis-operator-images.md) |
+
+## MySQL Operator
+
+| 项 | 值 |
+| --- | --- |
+| Chart | [mysql-operator](https://github.com/mysql/mysql-operator) |
+| Chart 版本 | **2.3.1**（仓库文件：`charts/mysql-operator-2.3.1.tgz`） |
+| appVersion | **26.10.0-2.3.1**（MySQL 26.10.0 / Operator 2.3.1） |
+| 来源 | [mysql.github.io/mysql-operator](https://mysql.github.io/mysql-operator/) 官方 Helm 仓库最新稳定版 |
+| 镜像清单 | [docs/mysql-operator-images.md](docs/mysql-operator-images.md) |
