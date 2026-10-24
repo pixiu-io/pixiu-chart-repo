@@ -9,54 +9,9 @@
 | appVersion | **v26.7.2** |
 | 来源 | [NVIDIA GPU Operator](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html) / Helm：`https://helm.ngc.nvidia.com/nvidia` |
 | Pixiu 默认调整 | 所有镜像 repository 已替换为华为云 SWR mirror（`swr.cn-north-4.myhuaweicloud.com/pixiu-public/nvidia/`） |
-| DCGM 指标抓取 | Chart 默认 `additionalLabels: {}`；安装/升级时按监控 release 名配置 `additionalLabels.release`（见下方） |
 
 > 下列镜像按本仓库 Chart 包内 **默认 values**（容器 GPU 路径、`sandboxWorkloads.enabled=false`）整理。开启沙箱 / DRA / 可选组件或覆盖 `repository`/`image`/`version` 后，实际拉取列表会变化。  
 > Driver 镜像实际 tag 常带 OS 后缀（如 `595.91.07-ubuntu22.04`），由节点 OS 决定，离线需按目标系统准备对应 tag。
-
-## DCGM 指标抓取配置（Prometheus）
-
-Chart 默认 `dcgmExporter.serviceMonitor.additionalLabels` 为 `{}`，DCGM ServiceMonitor 不会自动带 Prometheus 的 `release` 标签。若集群使用 kube-prometheus-stack，安装/升级 GPU Operator 时显式配置：
-
-```yaml
-dcgmExporter:
-  serviceMonitor:
-    additionalLabels:
-      release: kube-prometheus-stack
-```
-
-或命令行：
-
-```bash
-helm upgrade --install gpu-operator <chart包路径> -n gpu-system \
-  --set dcgmExporter.serviceMonitor.additionalLabels.release=kube-prometheus-stack
-```
-
-`release` 的值必须与 Prometheus 的选择器一致，查看方式：
-
-```bash
-kubectl -n monitor get prometheus -o yaml | grep -A3 'serviceMonitorSelector:'
-```
-
-若监控 release 名不是 `kube-prometheus-stack`，替换为实际值；或让 kube-prometheus-stack 选择全部 ServiceMonitor（`prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues: false`）。
-
-通过 pixiu 应用商店安装时，可将上面的 YAML 放入该 Chart 版本的「平台默认配置」或安装表单的 values 中。
-
-已有集群也可以直接 patch GPU Operator 的 ClusterPolicy（Operator 会同步到 ServiceMonitor）：
-
-```bash
-kubectl patch clusterpolicy cluster-policy --type=merge -p \
-  '{"spec":{"dcgmExporter":{"serviceMonitor":{"additionalLabels":{"release":"kube-prometheus-stack"}}}}}'
-```
-
-验证：
-
-```bash
-kubectl -n gpu-system get servicemonitor nvidia-dcgm-exporter -o jsonpath='{.metadata.labels}'
-# Prometheus 的 /api/v1/targets 中应出现 job=nvidia-dcgm-exporter 且 health=up
-```
-
-> 用默认 values 执行 `helm upgrade` 会按 Chart 默认的 `additionalLabels: {}` 重渲染 ClusterPolicy；升级时请保留上述 values 覆盖。
 
 ## 默认会拉取的镜像
 
