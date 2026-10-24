@@ -14,6 +14,9 @@
 | DOC-004 | GPU Operator 镜像清单 | 应用商店 / 镜像 | [gpu-operator-images.md](./gpu-operator-images.md) |
 | DOC-005 | Ingress NGINX 镜像清单 | 应用商店 / 镜像 | [ingress-nginx-images.md](./ingress-nginx-images.md) |
 | DOC-006 | MinIO 镜像清单 | 应用商店 / 镜像 | [minio-images.md](./minio-images.md) |
+| DOC-007 | Loki 镜像清单 | 应用商店 / 镜像 | [loki-images.md](./loki-images.md) |
+| DOC-008 | Promtail 镜像清单 | 应用商店 / 镜像 | [promtail-images.md](./promtail-images.md) |
+| DOC-009 | Cert-manager 镜像清单 | 应用商店 / 镜像 | [cert-manager-images.md](./cert-manager-images.md) |
 
 ## 工具脚本
 
