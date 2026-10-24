@@ -33,7 +33,6 @@
 | Chart 版本 | **v26.7.2**（仓库文件：`charts/gpu-operator-v26.7.2.tgz`） |
 | appVersion | **v26.7.2** |
 | 来源 | [NVIDIA GPU Operator](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html) |
-| DCGM 指标抓取 | 安装/升级时按监控 release 名配置 `dcgmExporter.serviceMonitor.additionalLabels.release`（默认 `kube-prometheus-stack`），详见 [docs/gpu-operator-images.md](docs/gpu-operator-images.md) |
 | 镜像清单 | [docs/gpu-operator-images.md](docs/gpu-operator-images.md) |
 
 ## Ingress NGINX
