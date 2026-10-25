@@ -94,3 +94,13 @@
 | appVersion | **v1.13.0** |
 | 来源 | [charts.longhorn.io](https://charts.longhorn.io) 官方 Helm 仓库最新稳定版 |
 | 镜像清单 | [docs/longhorn-images.md](docs/longhorn-images.md) |
+
+## Elasticsearch
+
+| 项 | 值 |
+| --- | --- |
+| Chart | [elasticsearch](https://github.com/elastic/helm-charts/tree/main/elasticsearch) |
+| Chart 版本 | **8.5.1**（仓库文件：`charts/elasticsearch-8.5.1.tgz`） |
+| appVersion | **8.5.1**（Elasticsearch 版本） |
+| 来源 | [helm.elastic.co](https://helm.elastic.co) 官方 Helm 仓库最新稳定版 |
+| 镜像清单 | [docs/elasticsearch-images.md](docs/elasticsearch-images.md) |

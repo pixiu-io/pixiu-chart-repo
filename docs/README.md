@@ -1,6 +1,6 @@
 # 文档索引
 
-> 最后更新：2026-10-24　|　维护：平台组
+> 最后更新：2026-10-25　|　维护：平台组
 
 每个主题对应一个独立 Markdown 文档，本文件仅作索引。
 
@@ -18,6 +18,7 @@
 | DOC-008 | Promtail 镜像清单 | 应用商店 / 镜像 | [promtail-images.md](./promtail-images.md) |
 | DOC-009 | Cert-manager 镜像清单 | 应用商店 / 镜像 | [cert-manager-images.md](./cert-manager-images.md) |
 | DOC-010 | Longhorn 镜像清单 | 应用商店 / 镜像 | [longhorn-images.md](./longhorn-images.md) |
+| DOC-011 | Elasticsearch 镜像清单 | 应用商店 / 镜像 | [elasticsearch-images.md](./elasticsearch-images.md) |
 
 ## 工具脚本
 
