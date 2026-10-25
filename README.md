@@ -104,3 +104,13 @@
 | appVersion | **8.5.1**（Elasticsearch 版本） |
 | 来源 | [helm.elastic.co](https://helm.elastic.co) 官方 Helm 仓库最新稳定版 |
 | 镜像清单 | [docs/elasticsearch-images.md](docs/elasticsearch-images.md) |
+
+## Harbor
+
+| 项 | 值 |
+| --- | --- |
+| Chart | [harbor](https://github.com/goharbor/harbor-helm) |
+| Chart 版本 | **1.19.4**（仓库文件：`charts/harbor-1.19.4.tgz`） |
+| appVersion | **2.15.4**（Harbor 版本） |
+| 来源 | [helm.goharbor.io](https://helm.goharbor.io) 官方 Helm 仓库最新稳定版 |
+| 镜像清单 | [docs/harbor-images.md](docs/harbor-images.md) |
