@@ -49,10 +49,10 @@
 
 | 项 | 值 |
 | --- | --- |
-| Chart | [minio](https://github.com/minio/charts/tree/master/minio) |
-| Chart 版本 | **5.4.0**（仓库文件：`charts/minio-5.4.0.tgz`） |
+| Chart | [minio](https://github.com/minio/charts/tree/master/minio)（上游仓库已归档，链接当前 404） |
+| Chart 版本 | **5.4.1**（仓库文件：`charts/minio-5.4.1.tgz`，官方 5.4.0 模板 + Pixiu 镜像调整） |
 | appVersion | **RELEASE.2024-12-18T13-15-44Z** |
-| 来源 | [charts.min.io](https://charts.min.io/) 官方 Helm 仓库最新稳定版 |
+| 来源 | [charts.min.io](https://charts.min.io/)（官方 Helm 仓库，已停止更新） |
 | 镜像清单 | [docs/minio-images.md](docs/minio-images.md) |
 
 ## Loki
