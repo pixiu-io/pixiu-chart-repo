@@ -47,8 +47,6 @@
 
 ## MinIO
 
-> **镜像提示**：官方 MinIO 镜像（`quay.io/minio/*`）与 SWR 裸 tag 均已不可得。本 Chart 包使用 SWR 的 `-cpuv1` 变体（仅 amd64），mc 复用 server 镜像内嵌的 `/usr/bin/mc` 二进制；MinIO CE 已停止更新，本包仅作过渡。详见 [docs/minio-images.md](docs/minio-images.md)。
-
 | 项 | 值 |
 | --- | --- |
 | Chart | [minio](https://github.com/minio/charts/tree/master/minio)（上游仓库已归档，链接当前 404） |
