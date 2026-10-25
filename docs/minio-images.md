@@ -68,11 +68,11 @@ docker.io/bitnamilegacy/os-shell:12-debian-12-r50
 | 部署形态 | 主工作负载 | Service / 存储 |
 | --- | --- | --- |
 | 官方 5.4.0 默认（distributed） | StatefulSet `minio`，`serviceName: minio-svc` | volumeClaimTemplate `export`，数据挂载 `/export` |
-| Bitnami 17.0.21 默认（standalone） | Deployment `minio`（1 副本） | Service `minio:9000`、`minio-console:9090`；PVC `minio`，挂载 `/bitnami/minio/data` |
+| Bitnami 17.0.21 默认（standalone） | Deployment `minio`（1 副本；**无 `serviceName` / 无 `volumeClaimTemplates`**） | Service `minio:9000`、`minio-console:9090`；PVC `minio`，挂载 `/bitnami/minio/data` |
 | Bitnami 17.0.21（distributed） | StatefulSet `minio`，`serviceName: minio-headless` | volumeClaimTemplate `data`（多盘 `data-<n>`），挂载 `/bitnami/minio/data` |
 
 - **官方 5.4.0 默认 distributed**：StatefulSet，`serviceName: minio-svc`、PVC 模板 `export`、数据挂载 `/export`。
-- **Bitnami 默认 standalone**：Deployment `minio` + PVC `minio` + 挂载 `/bitnami/minio/data`；与官方默认的工作负载类型、PVC 与数据路径均不同，Helm 升级无法复用旧数据。
+- **Bitnami 默认 standalone**：Deployment `minio`（**无 `serviceName` / 无 `volumeClaimTemplates`**）+ PVC `minio` + 挂载 `/bitnami/minio/data`；与官方默认的工作负载类型、PVC 与数据路径均不同，Helm 升级无法复用旧数据。
 - **Bitnami 若也用 distributed**：StatefulSet `serviceName: minio-headless`、volumeClaimTemplate `data`，与旧 `minio-svc` / `export` 不同。
 - 无论哪种模式，`Deployment` / `StatefulSet` 的 `selector`、StatefulSet 的 `serviceName` 与 `volumeClaimTemplates` 在 Kubernetes 中均不可变；直接 `helm upgrade` 会失败或产生资源冲突。**禁止走 Pixiu 应用商店的「升级」入口直接升级**，必须卸载旧 release 后全新安装。
 
@@ -130,7 +130,7 @@ global:
 
 ## 参考
 
-- Chart 页面（Artifact Hub，上游 GitHub 目录 `bitnami/minio` 已于 2026-09-08 删除）：<https://artifacthub.io/packages/helm/bitnami/minio>
+- Artifact Hub 归档页（上游 GitHub 目录 `bitnami/minio` 已于 2026-09-08 删除）：<https://artifacthub.io/packages/helm/bitnami/minio>
 - Bitnami legacy 镜像：<https://hub.docker.com/u/bitnamilegacy>
 - Bitnami 镜像校验说明：<https://github.com/bitnami/charts/issues/30850>
 - MinIO 项目：<https://github.com/minio/minio>
