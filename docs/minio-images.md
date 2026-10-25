@@ -4,13 +4,13 @@
 
 | 项 | 值 |
 | --- | --- |
-| Chart | [minio](https://github.com/bitnami/charts/tree/main/bitnami/minio) |
+| Chart | [minio](https://artifacthub.io/packages/helm/bitnami/minio) |
 | Chart 版本 | **17.0.21**（仓库文件：`charts/minio-17.0.21.tgz`） |
 | appVersion | **2025.7.23**（MinIO Server 版本） |
-| 来源 | [Bitnami charts](https://github.com/bitnami/charts)（上游已于 2026-09-08 弃用并删除该 chart，本仓库为归档包） |
+| 来源 | [Bitnami charts](https://github.com/bitnami/charts)（上游 GitHub 目录 `bitnami/minio` 已于 2026-09-08 弃用删除，本仓库为归档包） |
 | Pixiu 默认调整 | 所有镜像已替换为华为云 SWR mirror（`swr.cn-north-4.myhuaweicloud.com/pixiu-public/bitnami/`），并设置 `global.security.allowInsecureImages: true` |
 
-> **弃用警示（重要）**：Bitnami minio chart 已于 2026-09-08 被上游弃用删除；`bitnamilegacy` 镜像最后更新于 2025-08-19，不再提供安全更新。本次替换仅解决镜像可获得性，属**过渡方案**，需评估后续迁移至其他 S3 兼容存储或自建镜像。
+> **弃用警示（重要）**：Bitnami minio chart 已于 2026-09-08 被上游弃用删除；镜像来自 `bitnamilegacy`（最后更新于 2025-08-19），不再提供安全更新。本次替换仅解决镜像可获得性，属**过渡方案**，需评估后续迁移至其他 S3 兼容存储或自建镜像。
 
 > 下列镜像按本仓库 Chart 包内 **默认 values** 整理（`mode=standalone`、`console.enabled=true`、`provisioning.enabled=false`、`defaultInitContainers.volumePermissions.enabled=false`）。默认安装只拉取 **2 个**镜像；开启可选配置后最多再引入 **2 个**。
 >
@@ -41,16 +41,16 @@ docker.io/bitnamilegacy/minio-object-browser:2.0.2-debian-12-r3
 docker.io/bitnamilegacy/os-shell:12-debian-12-r50
 ```
 
-各镜像对应的源 manifest digest 与架构（多架构 manifest list，amd64 / arm64 均可用）：
+各镜像对应的源 manifest digest 与架构：
 
-| 镜像 | 源 digest | 架构 |
+| 原生镜像 | digest | 架构 |
 | --- | --- | --- |
-| `docker.io/bitnamilegacy/minio:2025.7.23-debian-12-r3` | `sha256:953d489a81cc4de7975f90e07202189c4325da39b0b92470b6a13c7ea99e36cd` | amd64 / arm64 |
-| `docker.io/bitnamilegacy/minio-object-browser:2.0.2-debian-12-r3` | `sha256:4ca163354c4f4e2cf87a0c6cf668f47d07f7f176b53d9bd4bd16b81df62b2763` | amd64 / arm64 |
-| `docker.io/bitnamilegacy/minio-client:2025.7.21-debian-12-r2` | `sha256:7a6b4b93998903f1673d2bd2140ac26b807c4224627b743778c5a8f70db561f1` | amd64 / arm64 |
-| `docker.io/bitnamilegacy/os-shell:12-debian-12-r50` | `sha256:e328cff6e45072a3e90a7659a16f3cf5fa801909b1151e6554c319059c092155` | amd64 / arm64 |
+| `docker.io/bitnamilegacy/minio:2025.7.23-debian-12-r3` | `sha256:953d489a81cc4de7975f90e07202189c4325da39b0b92470b6a13c7ea99e36cd` | amd64/arm64 |
+| `docker.io/bitnamilegacy/minio-object-browser:2.0.2-debian-12-r3` | `sha256:4ca163354c4f4e2cf87a0c6cf668f47d07f7f176b53d9bd4bd16b81df62b2763` | amd64/arm64 |
+| `docker.io/bitnamilegacy/minio-client:2025.7.21-debian-12-r2` | `sha256:7a6b4b93998903f1673d2bd2140ac26b807c4224627b743778c5a8f70db561f1` | amd64/arm64 |
+| `docker.io/bitnamilegacy/os-shell:12-debian-12-r50` | `sha256:e328cff6e45072a3e90a7659a16f3cf5fa801909b1151e6554c319059c092155` | amd64/arm64 |
 
-> digest 为**源镜像**（bitnamilegacy）的校验值，用于确认同步来源；镜像搬运到 SWR 后 manifest digest 会变化，**以 SWR manifest 为准**。Chart values 中的 `digest` 字段保持为空，按 tag 拉取，避免搬运后 digest 不匹配导致拉取失败。
+> digest 为**源镜像**（bitnamilegacy）的校验值，用于确认同步来源；镜像搬运到 SWR 后 manifest digest 会变化，**以 SWR manifest 为准**。Chart values 中的 `digest` 保持为空，按 tag 拉取，避免搬运后 digest 不匹配导致拉取失败。
 
 ## 离线 / 私有仓库建议
 
@@ -61,40 +61,50 @@ docker.io/bitnamilegacy/os-shell:12-debian-12-r50
 
 ## 兼容性与迁移注意
 
-本仓库此前使用 MinIO 官方 `minio` chart 5.4.0（appVersion `RELEASE.2024-12-18T13-15-44Z`，默认 `mode=distributed`、`replicas=16`）。Bitnami 17.0.21 是**另一套实现**（默认 `mode=standalone`、`console.enabled=true`），**不能原地 `helm upgrade`**，必须按全新安装 + 数据迁移处理。
+本仓库此前使用 MinIO 官方 `minio` chart 5.4.0（appVersion `RELEASE.2024-12-18T13-15-44Z`），默认形态为 `mode=distributed`（`replicas=16`、`persistence.size=500Gi`）；Bitnami 17.0.21 默认形态为 `mode=standalone`（Deployment 单副本、`persistence.size=8Gi`；`statefulset.replicaCount` 默认值为 4，但仅在 distributed 模式生效），且 Console 默认开启。两者是不同实现，**不能从 5.4.0 原地 `helm upgrade`**，必须全新安装 + 数据迁移。
 
-- **不可原地升级**：两套 Chart 的 StatefulSet / Deployment `selector`、`serviceName`（旧 `<fullname>-svc` → 新 `<fullname>-headless`）、分布式模式 `volumeClaimTemplates` 名称均不同，而这些字段在 Kubernetes 中不可变；直接 `helm upgrade` 会失败或产生资源冲突。请卸载旧 release 后全新安装。
+### 工作负载与不可变字段
 
-- **旧 values 键会被静默忽略**：Helm 不会对未知键报错，沿用旧 values 时配置会“看似生效、实际丢失”。常见对应关系：
+| 部署形态 | 主工作负载 | Service / 存储 |
+| --- | --- | --- |
+| 官方 5.4.0 默认（distributed） | StatefulSet `minio`，`serviceName: minio-svc` | volumeClaimTemplate `export`，数据挂载 `/export` |
+| Bitnami 17.0.21 默认（standalone） | Deployment `minio`（1 副本） | Service `minio:9000`、`minio-console:9090`；PVC `minio`，挂载 `/bitnami/minio/data` |
+| Bitnami 17.0.21（distributed） | StatefulSet `minio`，`serviceName: minio-headless` | volumeClaimTemplate `data`（多盘 `data-<n>`），挂载 `/bitnami/minio/data` |
 
-  | 官方 5.4.0 | Bitnami 17.0.21 | 说明 |
-  | --- | --- | --- |
-  | `rootUser` / `rootPassword` | `auth.rootUser` / `auth.rootPassword` | 默认凭证 |
-  | `mcImage` | `clientImage` | mc 客户端镜像（仅 NOTES 手工 Pod 使用） |
-  | `replicas` | `statefulset.replicaCount` | 仅 distributed 模式有效，需为偶数且 `>= 4` |
-  | `consoleService` | `console.service` | Console Service 配置 |
-  | `mountPath` | `persistence.mountPath` | 新默认 `/bitnami/minio/data`，不要照抄旧值 `/export` |
-  | `image.repository`（完整镜像地址） | `image.repository`（仅仓库名） | 新 Chart 由 `image.registry` + `repository` 拼接，语义不同 |
+- **官方 5.4.0 默认 distributed**：StatefulSet，`serviceName: minio-svc`、PVC 模板 `export`、数据挂载 `/export`。
+- **Bitnami 默认 standalone**：Deployment `minio` + PVC `minio` + 挂载 `/bitnami/minio/data`；与官方默认的工作负载类型、PVC 与数据路径均不同，Helm 升级无法复用旧数据。
+- **Bitnami 若也用 distributed**：StatefulSet `serviceName: minio-headless`、volumeClaimTemplate `data`，与旧 `minio-svc` / `export` 不同。
+- 无论哪种模式，`Deployment` / `StatefulSet` 的 `selector`、StatefulSet 的 `serviceName` 与 `volumeClaimTemplates` 在 Kubernetes 中均不可变；直接 `helm upgrade` 会失败或产生资源冲突。**禁止走 Pixiu 应用商店的「升级」入口直接升级**，必须卸载旧 release 后全新安装。
 
-- **旧 values 快照会覆盖新默认值**：跨 Chart 升级时若使用 `--reuse-values` 或直接复用 5.4.0 的 values 文件，旧 `image.repository`（完整地址，如 `swr.../pixiu-public/minio/minio`）会与新 Chart 默认 `image.registry`（`swr.../pixiu-public/bitnami`）拼接，得到重复前缀的非法镜像地址。请以本 Chart 默认 values 为基线重新生成 values，不要复用旧 values。
+### values 与 Secret 键变化
 
-- **默认部署模式不同**：5.4.0 默认 `distributed`（16 副本），17.0.21 默认 `standalone`。若原部署依赖分布式纠删码，需显式设置 `mode=distributed` 与 `statefulset.replicaCount`（偶数且 `>= 4`）。
+Helm 不会对未知 values 键报错，旧键会被**静默忽略**；跨 Chart 升级时旧 values 快照（`--reuse-values` 或直接复用 5.4.0 的 values 文件）还会覆盖新 Chart 的默认值。常见对应关系：
 
-- **数据路径变化**：容器内数据目录由 `/export` 改为 `/bitnami/minio/data`；distributed 模式的 `volumeClaimTemplates` 名称由 `export` 改为 `data`（多盘为 `data-<n>`）。依赖旧路径的 hostPath、备份脚本、sidecar 需同步调整。
+| 官方 5.4.0 | Bitnami 17.0.21 | 说明 |
+| --- | --- | --- |
+| `rootUser` / `rootPassword` | `auth.rootUser` / `auth.rootPassword` | 默认凭证 |
+| `mcImage` | `clientImage` | mc 客户端镜像（仅 NOTES 手工 Pod 使用） |
+| `replicas` | `statefulset.replicaCount` | 仅 distributed 模式有效，需为偶数且 `>= 4` |
+| `consoleService` | `console.service` | Console Service 配置 |
+| `mountPath` | `persistence.mountPath` | 新默认 `/bitnami/minio/data`，不要照抄旧值 `/export` |
+| `users` / `buckets` / `policies` | `provisioning.users` / `provisioning.buckets` / `provisioning.policies` | `provisioning.enabled` 默认 `false`，不创建任何 bucket/user/policy |
+| `image.repository`（完整镜像地址） | `image.repository`（仅仓库名） | 新 Chart 由 `image.registry` + `repository` 拼接，语义不同 |
 
+- **旧 values 快照会覆盖新默认值**：旧 `image.repository`（完整地址，如 `swr.../pixiu-public/minio/minio`）会与新 Chart 默认 `image.registry`（`swr.../pixiu-public/bitnami`）拼接，得到重复前缀的非法镜像地址。请以本 Chart 默认 values 为基线重新生成 values，不要复用旧 values。
+- **默认形态差异**：官方 5.4.0 默认 `mode=distributed`、`replicas=16`、`persistence.size=500Gi`；Bitnami 17.0.21 默认 `mode=standalone`、Deployment 1 副本（`statefulset.replicaCount` 值 4，仅 distributed 生效）、`persistence.size=8Gi`。如需保持原形态，安装时显式设置 `mode=distributed`、`statefulset.replicaCount`（偶数且 `>= 4`）与 `persistence.size=500Gi`。
 - **Secret 键名变化**：默认 root 凭证 Secret 的 key 由 `rootUser` / `rootPassword` 改为 `root-user` / `root-password`，引用该 Secret 的外部应用 / Job 需同步修改。
+- **数据路径变化**：容器内数据目录由 `/export` 改为 `/bitnami/minio/data`；distributed 模式的 `volumeClaimTemplates` 名称由 `export` 改为 `data`（多盘为 `data-<n>`）。依赖旧路径的 hostPath、备份脚本、sidecar 需同步调整。
+- **Console 端口变化**：旧 Chart Console 与 Server 同进程，Service `minio-console:9001`（`consoleService.port`）；新 Chart Console 是独立的 `minio-object-browser` Deployment，Service `minio-console:9090`（`console.enabled=true` 默认开启）。Ingress、Service、防火墙和用户访问地址需同步调整；S3 API 端口仍为 `9000`。
+- **PVC 保留注意**：distributed 模式的 PVC 由 StatefulSet `volumeClaimTemplates` 创建，`helm uninstall` 通常不会删除，但仍建议先快照；standalone 模式的 PVC 是 Chart 管理的普通资源，`helm uninstall` 会一并删除。卸载前请先备份数据，并给旧 PVC 添加 `helm.sh/resource-policy: keep` 注解、确认 StorageClass `reclaimPolicy=Retain`。新旧 standalone PVC 都基于 release fullname 命名，同 namespace 同名 release 重装会冲突，建议使用新 release 名称 / namespace 或显式 `persistence.existingClaim`。
 
-- **Console 端口变化**：旧 Chart Console 与 Server 同进程，端口 `9001`（`consoleService.port`）；新 Chart Console 是独立的 object-browser Deployment（`console.enabled=true` 默认开启），端口 **`9090`**。Ingress、Service、防火墙和用户访问地址需同步调整；S3 API 端口仍为 `9000`。
+### 建议迁移步骤
 
-- **PVC 保留注意**：standalone 模式的 PVC 是 Chart 管理的普通资源，`helm uninstall` 会一并删除（不同于 StatefulSet `volumeClaimTemplates` 生成的 PVC）。卸载前请先备份数据，并给旧 PVC 添加 `helm.sh/resource-policy: keep` 注解、确认 StorageClass `reclaimPolicy=Retain`；新旧 standalone PVC 都基于 release fullname 命名，同 namespace 同名 release 重装会冲突，建议使用新 release 名称 / namespace 或显式 `persistence.existingClaim`。
-
-- **建议迁移步骤**：
-  1. 备份对象数据（`mc mirror` 或直接备份 PVC），并导出 bucket / user / policy 配置；
-  2. 为旧 PVC 加保留注解并确认回收策略，卸载旧 release；
-  3. 用新的 Bitnami values 全新安装 17.0.21（建议先在新 namespace / 新 PVC 验证）；
-  4. 将对象数据恢复到新数据路径 `/bitnami/minio/data`；
-  5. 重建 bucket / user / policy（也可开启 `provisioning.enabled` 声明式创建）；
-  6. 校验应用 endpoint / 凭证 / Console `9090` 后再切换流量，最后清理旧 PVC。
+1. 备份对象数据（`mc mirror` 或直接备份 PVC），并导出 bucket / user / policy 配置；
+2. 为旧 PVC 加保留注解并确认回收策略，卸载旧 release；
+3. 用新的 Bitnami values 全新安装 17.0.21（建议先在新 namespace / 新 PVC 验证）；
+4. 将对象数据恢复到新数据路径 `/bitnami/minio/data`；
+5. 重建 bucket / user / policy（也可开启 `provisioning.enabled` 声明式创建）；
+6. 校验应用 endpoint / 凭证 / Console `9090` 后再切换流量，最后清理旧 PVC。
 
 ## `global.security.allowInsecureImages` 说明
 
@@ -112,14 +122,15 @@ global:
 ## 备注
 
 - **上游已弃用**：Bitnami 于 2026-09-08 弃用并删除 `minio` chart，本仓库的 17.0.21 为归档版本，不再有上游修复。
-- **镜像停更风险**：`bitnamilegacy` 仅为旧镜像归档，不再接收安全更新；后续 MinIO 或基础镜像（Debian 12）出现 CVE 时无法通过升级 tag 修复，存在明确的安全停更风险，建议规划迁移至仍在维护的 MinIO Chart / 镜像源。
+- **镜像停更风险**：`bitnamilegacy` 仅为旧镜像归档，最后更新于 2025-08-19，不再接收安全更新；后续 MinIO 或基础镜像（Debian 12）出现 CVE 时无法通过升级 tag 修复，存在明确的安全停更风险，建议规划迁移至仍在维护的 MinIO Chart / 镜像源。
+- **Console 能力待验证**：Console 由独立 `minio-object-browser` Deployment 提供（9090），其用户 / 策略 / bucket 管理能力是否与官方内置 Console 完全等价**尚未验证**，上线前需实际登录验证。
 - **端口**：S3 API `9000`；Console `9090`（注意与 MinIO 官方 Console 默认 `9001` 不同）。
 - 默认 `mode=standalone`；`provisioning.enabled=false`，默认不会创建 bucket / user / policy。
-- Chart 已从上游仓库删除，`Chart.yaml` 中的 `home` / `sources` 链接可能失效，保留仅为溯源。
+- Chart 已从上游 GitHub 目录删除，`Chart.yaml` 中的 `home` / `sources` 链接可能失效，保留仅为溯源。
 
 ## 参考
 
-- Chart 源码（上游已删除）：<https://github.com/bitnami/charts/tree/main/bitnami/minio>
+- Chart 页面（Artifact Hub，上游 GitHub 目录 `bitnami/minio` 已于 2026-09-08 删除）：<https://artifacthub.io/packages/helm/bitnami/minio>
 - Bitnami legacy 镜像：<https://hub.docker.com/u/bitnamilegacy>
 - Bitnami 镜像校验说明：<https://github.com/bitnami/charts/issues/30850>
 - MinIO 项目：<https://github.com/minio/minio>
