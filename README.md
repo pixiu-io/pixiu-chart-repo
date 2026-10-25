@@ -55,6 +55,8 @@
 | 来源 | [Bitnami charts](https://github.com/bitnami/charts)（上游已于 2026-09-08 弃用并删除该 chart，属归档包） |
 | 镜像清单 | [docs/minio-images.md](docs/minio-images.md) |
 
+> **弃用警示**：Bitnami minio chart 已于 2026-09-08 被上游弃用删除；`bitnamilegacy` 镜像最后更新 2025-08-19、不再提供安全更新。本次替换仅解决镜像可获得性，属过渡方案，需评估后续迁移至其他 S3 兼容存储或自建镜像。
+
 ## Loki
 
 | 项 | 值 |
