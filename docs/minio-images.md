@@ -10,13 +10,6 @@
 | 来源 | [charts.min.io](https://charts.min.io/)（官方 Helm 仓库，已停止更新） |
 | Pixiu 默认调整 | 模板保持官方 5.4.0 原样，仅 values 调整：`image` / `mcImage` 指向 SWR plain tag（无 `-cpuv1` 后缀），默认规格见下文「默认规格（Pixiu 调整）」 |
 
-> **重要**：
-> - 本次使用的 **plain tag `RELEASE.2025-09-07T16-13-09Z` 在 SWR 上可用**，与旧版 `RELEASE.2024-12-18T13-15-44Z` 裸 tag 已不可得的情况不同。
-> - 该镜像 **linux/amd64 单架构**（无 arm64）。
-> - 镜像基于 **UBI9**，要求 CPU 支持 **x86-64-v2** 指令集；不满足时改用 `-cpuv1` 变体（见下文变体表）。
-> - `mc` 直接复用 server 镜像内嵌的二进制，无需第二个镜像。
-> - 镜像存在已知高危漏洞 CVE-2025-62506，详见文末「风险提示」；有安全要求的场景请按该节自行构建修复版镜像。
-
 ## 默认镜像
 
 默认 values 中仅有 **2 个镜像引用**（`image` 与 `mcImage`），两者指向**同一个物理镜像**，因此实际只需拉取 **1 个镜像**：
@@ -73,23 +66,6 @@ swr.cn-north-4.myhuaweicloud.com/pixiu-public/minio/minio:RELEASE.2025-09-07T16-
 - `2Gi` 仅为 request、**不设 limit**，实际用量可超过该值；用户可在安装页按需调大。
 - `replicas` 建议取 **4 的倍数**，以保持 EC 集与驱动器布局规整。
 - 默认绑定 `longhorn` StorageClass：目标集群必须已安装 Longhorn 且存在名为 `longhorn` 的 StorageClass；若没有，PVC 会 Pending，请在安装页改回集群默认 SC 或实际 SC 名称。
-
-## 升级 / 重传注意事项
-
-1. **重传同名同版本会 409**：应用商店按 `name + version` 唯一。若商店中已存在旧的 5.4.0 版本记录（例如早期使用 2024-12-18 镜像的 5.4.0 包），直接重传会返回 409，必须先删除商店中的旧 5.4.0 版本记录后再上传。**这会切断存量 5.4.0 release 与该版本记录的升级 / 回滚关联**，操作前请确认存量实例的处置方式。
-2. **存量 5.4.1 release 不会自动收到 5.4.0 的升级提示**：本包版本号由 5.4.1 回落为 5.4.0，平台不会自动推送降级升级。可在升级弹窗中手动选择 5.4.0（若应用商店目录中仍存在该版本），或按运维流程重装。
-3. **升级弹窗会预填旧 values**：应用商店升级时以当前 release 的 values（current）优先于新包默认值，旧 values 中的 `image.tag` / `mcImage.tag` 仍是旧 tag。必须手动改为下面的值，否则升级后仍会按旧 tag 拉取镜像（`ImagePullBackOff`）：
-
-   ```yaml
-   image:
-     repository: swr.cn-north-4.myhuaweicloud.com/pixiu-public/minio/minio
-     tag: RELEASE.2025-09-07T16-13-09Z
-   mcImage:
-     repository: swr.cn-north-4.myhuaweicloud.com/pixiu-public/minio/minio
-     tag: RELEASE.2025-09-07T16-13-09Z
-   ```
-
-4. **新默认规格只对全新安装生效**：升级时 current values 优先，旧 release 的 `replicas` / `resources.requests.memory` / `persistence.size` 会沿用（例如旧 5.4.1 的 16 / 16Gi / 500Gi），不会自动变为 4 / 2Gi / 50Gi。`persistence.size` 受 PVC 不可缩容限制，升级后仍为原大小；`replicas` 的变更涉及 MinIO 数据布局，禁止在升级弹窗直接缩容，需按扩容/迁移方案单独规划。
 
 ## 可选：构建独立 mc 镜像
 
