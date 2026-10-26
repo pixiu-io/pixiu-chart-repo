@@ -50,10 +50,8 @@
 | 项 | 值 |
 | --- | --- |
 | Chart | [minio](https://github.com/minio/charts/tree/master/minio)（上游仓库已归档，链接当前 404） |
-| Chart 版本 | **5.4.0**（仓库文件：`charts/minio-5.4.0.tgz`，官方 5.4.0 模板 + Pixiu 镜像与默认规格调整） |
+| Chart 版本 | **5.4.0**（仓库文件：`charts/minio-5.4.0.tgz`） |
 | appVersion | **RELEASE.2025-09-07T16-13-09Z** |
-| 默认规格 | 4 副本 / 2Gi 内存 request / 50Gi 存储 / StorageClass: longhorn（Pixiu 调整，上游默认 16/16Gi/500Gi/集群默认 SC） |
-| 已知风险 | 镜像受 CVE-2025-62506 影响（上游修复版仅源码发布），详见 [docs/minio-images.md](docs/minio-images.md) |
 | 来源 | [charts.min.io](https://charts.min.io/)（官方 Helm 仓库，已停止更新） |
 | 镜像清单 | [docs/minio-images.md](docs/minio-images.md) |
 
