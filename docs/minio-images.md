@@ -63,6 +63,7 @@ swr.cn-north-4.myhuaweicloud.com/pixiu-public/minio/minio:RELEASE.2025-09-07T16-
 | `drivesPerNode` | 1 | 1 |
 | `resources.requests.memory` | **2Gi** | 16Gi |
 | `persistence.size` | **50Gi** | 500Gi |
+| `persistence.storageClass` | `longhorn` | `""`（集群默认） |
 
 合计：**4 个 Pod、8Gi 内存 request、200Gi raw 存储**（4 × 50Gi）。4 盘采用 EC:2，可用容量约 **100Gi**，允许坏 **2 盘**。
 
@@ -71,6 +72,7 @@ swr.cn-north-4.myhuaweicloud.com/pixiu-public/minio/minio:RELEASE.2025-09-07T16-
 - 上游默认面向生产大集群（16 Pod、256Gi 内存 request、约 8TiB raw 存储），应用商店默认值按可落地的较小规格收敛。
 - `2Gi` 仅为 request、**不设 limit**，实际用量可超过该值；用户可在安装页按需调大。
 - `replicas` 建议取 **4 的倍数**，以保持 EC 集与驱动器布局规整。
+- 默认绑定 `longhorn` StorageClass：目标集群必须已安装 Longhorn 且存在名为 `longhorn` 的 StorageClass；若没有，PVC 会 Pending，请在安装页改回集群默认 SC 或实际 SC 名称。
 
 ## 升级 / 重传注意事项
 
