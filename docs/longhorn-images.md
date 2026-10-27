@@ -5,10 +5,10 @@
 | 项 | 值 |
 | --- | --- |
 | Chart | [longhorn](https://github.com/longhorn/longhorn) |
-| Chart 版本 | **1.13.0**（仓库文件：`charts/longhorn-1.13.0.tgz`） |
-| appVersion | **v1.13.0** |
+| Chart 版本 | **1.13.0**（仓库文件：`charts/longhorn-1.13.0.tgz`，K8s ≥1.34）<br>**1.12.1**（仓库文件：`charts/longhorn-1.12.1.tgz`，K8s ≥1.25，覆盖 1.28.x） |
+| appVersion | **v1.13.0** / **v1.12.1** |
 | 来源 | [charts.longhorn.io](https://charts.longhorn.io)（官方 Helm 仓库） |
-| Pixiu 默认调整 | 所有镜像已替换为华为云 SWR mirror（`swr.cn-north-4.myhuaweicloud.com/pixiu-public/longhorn/`） |
+| Pixiu 默认调整 | 所有镜像已替换为华为云 SWR mirror（`swr.cn-north-4.myhuaweicloud.com/pixiu-public/longhorn/`），两个版本处理方式一致 |
 
 > 下列镜像按本仓库 Chart 包内 **默认 values** 整理。Longhorn 的引擎类镜像（engine / instance-manager / share-manager / backing-image-manager）与 CSI sidecar 镜像通过 Longhorn Manager 的 Setting 下发，不在模板中直接渲染为容器镜像，离线环境**必须全部同步**。
 
@@ -63,10 +63,47 @@ longhornio/livenessprobe:v2.20.0
 2. Chart 包内默认 values 已通过 `global.imageRegistry`（SWR 域名）+ `image.*.repository`（`pixiu-public/longhorn/<name>`）指向 SWR mirror，离线环境开箱即用；
 3. 若使用其他私有仓库，可整体替换 `global.imageRegistry` 并同步修改 13 处 `image.*.repository`；引擎类与 CSI 镜像由 Manager Setting 下发，改 values 即可全局生效，无需改 Setting。
 
+## 1.12.1 版本镜像（K8s ≥1.25，适用 v1.28.15 等旧集群）
+
+Chart 1.12.1 与 1.13.0 组件结构一致（13 个镜像），mirror 路径相同，仅 tag 不同。原生镜像 → mirror 镜像对应关系同上表，tag 对照：
+
+| 组件 | 1.12.1 tag | 原生镜像 |
+| --- | --- | --- |
+| longhorn-manager / longhorn-driver | `v1.12.1` | `longhornio/longhorn-manager:v1.12.1` |
+| longhorn-ui | `v1.12.1` | `longhornio/longhorn-ui:v1.12.1` |
+| longhorn-engine | `v1.12.1` | `longhornio/longhorn-engine:v1.12.1` |
+| longhorn-instance-manager | `v1.12.1` | `longhornio/longhorn-instance-manager:v1.12.1` |
+| longhorn-share-manager | `v1.12.1` | `longhornio/longhorn-share-manager:v1.12.1` |
+| backing-image-manager | `v1.12.1` | `longhornio/backing-image-manager:v1.12.1` |
+| support-bundle-kit | `v0.0.92` | `longhornio/support-bundle-kit:v0.0.92` |
+| csi-attacher | `v4.12.0` | `longhornio/csi-attacher:v4.12.0` |
+| csi-provisioner | `v5.3.0` | `longhornio/csi-provisioner:v5.3.0` |
+| csi-node-driver-registrar | `v2.17.0` | `longhornio/csi-node-driver-registrar:v2.17.0` |
+| csi-resizer | `v2.2.1` | `longhornio/csi-resizer:v2.2.1` |
+| csi-snapshotter | `v8.6.0` | `longhornio/csi-snapshotter:v8.6.0` |
+| livenessprobe | `v2.19.0` | `longhornio/livenessprobe:v2.19.0` |
+
+```text
+longhornio/longhorn-manager:v1.12.1
+longhornio/longhorn-ui:v1.12.1
+longhornio/longhorn-engine:v1.12.1
+longhornio/longhorn-instance-manager:v1.12.1
+longhornio/longhorn-share-manager:v1.12.1
+longhornio/backing-image-manager:v1.12.1
+longhornio/support-bundle-kit:v0.0.92
+longhornio/csi-attacher:v4.12.0
+longhornio/csi-provisioner:v5.3.0
+longhornio/csi-node-driver-registrar:v2.17.0
+longhornio/csi-resizer:v2.2.1
+longhornio/csi-snapshotter:v8.6.0
+longhornio/livenessprobe:v2.19.0
+```
+
 ## 备注
 
-- Chart 1.13.0 为 Longhorn 官方仓库当前最新稳定版。
-- **Kubernetes 版本要求 >= 1.34**（`kubeVersion: ">=1.34.0-0"`），部署前确认集群版本。
+- Chart 1.13.0 为 Longhorn 官方仓库当前最新稳定版，**要求 Kubernetes ≥1.34**（`kubeVersion: ">=1.34.0-0"`），无法安装在 1.28 集群。
+- **Chart 1.12.1 要求 Kubernetes ≥1.25**（`kubeVersion: ">=1.25.0-0"`），是支持 K8s v1.28.15 的最新版本，老集群请选此版本。
+- Longhorn 不支持从高版本降级到低版本；两个版本可共存于应用商店，按集群 K8s 版本选择安装。
 - Longhorn 是分布式块存储（RWO/RWX 块设备），可作为集群默认 StorageClass 提供有状态应用存储。
 - Chart 中 `privateRegistry`（`registryUrl/User/Passwd`）用于镜像仓库认证 Secret，使用 SWR 匿名 mirror 时无需配置。
 
