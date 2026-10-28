@@ -90,8 +90,8 @@
 | 项 | 值 |
 | --- | --- |
 | Chart | [longhorn](https://github.com/longhorn/longhorn) |
-| Chart 版本 | **1.13.0**（仓库文件：`charts/longhorn-1.13.0.tgz`） |
-| appVersion | **v1.13.0** |
+| Chart 版本 | **1.13.0**（仓库文件：`charts/longhorn-1.13.0.tgz`，K8s ≥1.34）；**1.12.1**（仓库文件：`charts/longhorn-1.12.1.tgz`，K8s ≥1.25，适用 1.28.x） |
+| appVersion | **v1.13.0** / **v1.12.1** |
 | 来源 | [charts.longhorn.io](https://charts.longhorn.io) 官方 Helm 仓库最新稳定版 |
 | 镜像清单 | [docs/longhorn-images.md](docs/longhorn-images.md) |
 
