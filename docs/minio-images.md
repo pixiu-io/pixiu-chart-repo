@@ -8,7 +8,7 @@
 | Chart 版本 | **5.4.0**（仓库文件：`charts/minio-5.4.0.tgz`） |
 | appVersion | **RELEASE.2025-09-07T16-13-09Z**（MinIO Server 版本） |
 | 来源 | [charts.min.io](https://charts.min.io/)（官方 Helm 仓库，已停止更新） |
-| Pixiu 默认调整 | 模板保持官方 5.4.0 原样，仅 values 调整：`image` / `mcImage` 指向 SWR plain tag（无 `-cpuv1` 后缀），默认规格见下文「默认规格（Pixiu 调整）」 |
+| Pixiu 默认调整 | 除新增 `templates/validate.yaml` 安装前校验外，模板保持官方 5.4.0 原样；values 调整：`image` / `mcImage` 指向 SWR plain tag（无 `-cpuv1` 后缀），默认规格见下文「默认规格（Pixiu 调整）」。校验规则：`mode=distributed` 时若 `pools × replicas × drivesPerNode < 2` 直接渲染失败；`mode` 仅允许 `distributed` / `standalone` |
 
 ## 默认镜像
 
@@ -46,26 +46,49 @@ swr.cn-north-4.myhuaweicloud.com/pixiu-public/minio/minio:RELEASE.2025-09-07T16-
 
 ## 默认规格（Pixiu 调整）
 
-模板与官方 Helm chart 5.4.0 完全一致，以下仅为 values 默认值调整（Pixiu 默认规格差异）：
+模板与官方 Helm chart 5.4.0 一致（仅新增 `templates/validate.yaml` 安装前校验），以下仅为 values 默认值调整（Pixiu 默认规格差异）：
 
 | 项 | Pixiu 默认 | 上游默认 |
 | --- | --- | --- |
 | `mode` | `distributed` | `distributed` |
-| `replicas` | **4** | 16 |
+| `replicas` | **2** | 16 |
 | `pools` | 1 | 1 |
 | `drivesPerNode` | 1 | 1 |
 | `resources.requests.memory` | **2Gi** | 16Gi |
 | `persistence.size` | **50Gi** | 500Gi |
 | `persistence.storageClass` | `longhorn` | `""`（集群默认） |
 
-合计：**4 个 Pod、8Gi 内存 request、200Gi raw 存储**（4 × 50Gi）。4 盘采用 EC:2，可用容量约 **100Gi**，允许坏 **2 盘**。
+合计：**2 个 Pod、4Gi 内存 request、100Gi raw 存储**（2 × 50Gi）。2 盘采用 EC:1，可用容量约 **50Gi**，允许坏 **1 盘**；如需 EC:2（允许坏 2 盘）在安装页把 `replicas` 调到 4。
 
 调整原因与说明：
 
 - 上游默认面向生产大集群（16 Pod、256Gi 内存 request、约 8TiB raw 存储），应用商店默认值按可落地的较小规格收敛。
 - `2Gi` 仅为 request、**不设 limit**，实际用量可超过该值；用户可在安装页按需调大。
-- `replicas` 建议取 **4 的倍数**，以保持 EC 集与驱动器布局规整。
+- `replicas` 至少 2（本包默认 2，EC:1）；如需 EC:2（允许坏 2 盘）建议取 4 的倍数（4/8…），以保持 EC 集与驱动器布局规整。
 - 默认绑定 `longhorn` StorageClass：目标集群必须已安装 Longhorn 且存在名为 `longhorn` 的 StorageClass；若没有，PVC 会 Pending，请在安装页改回集群默认 SC 或实际 SC 名称。
+
+## 常见问题
+
+### 安装失败：`failed post-install: job minio-post-job failed: BackoffLimitExceeded`
+
+**现象**：安装后 Pod 反复重启或安装直接失败，平台报错类似：
+
+```text
+failed post-install: job minio-post-job failed: BackoffLimitExceeded
+```
+
+**原因**：在 `mode: distributed` 下把 `replicas` 改成 1（或小于 2）。distributed 模式要求多盘布局，chart 只会生成单个 URL 端点；MinIO 单盘部署要求 path 端点，服务启动时报 `use path style endpoint for single node setup` 后退出，post-install Job（`minio-post-job`）因此连不上服务，重试耗尽后报 `BackoffLimitExceeded`。
+
+**处理**：
+
+- 保持 `mode: distributed` 时，`replicas` 至少为 2；单节点集群也可运行，本包默认 2（EC:1，允许坏 1 盘）；需要 EC:2 时调为 4。
+- 只需要单实例时，把 `mode` 改为 `standalone`，同时设置 `persistence.size`（`replicas` 在 standalone 模式下不生效）。
+
+**排查提示**：`job minio-post-job ... BackoffLimitExceeded` 只是表象，先看 MinIO StatefulSet 对应 Pod 的日志/状态（如上面的 path style 报错），再决定调整 `mode` 还是 `replicas`。
+
+> **Pixiu 修订包已在安装前拦截该配置**：若安装直接报 `MinIO distributed 模式至少需要 2 个磁盘/端点...`，按提示将 `replicas` 调整为至少 2（本包默认 2；如需 EC:2 可设为 4），或把 `mode` 改为 `standalone`，不会再走到 post-install Job 才失败。
+>
+> 注意：同版本 5.4.0 不可重复上传，已导入旧包的平台需更新默认配置/删除后重新导入，才能获得该校验。
 
 ## 可选：构建独立 mc 镜像
 
