@@ -8,7 +8,7 @@
 | Chart 版本 | **7.5.0**（仓库文件：`charts/loki-7.5.0.tgz`） |
 | appVersion | **3.6.16**（Chart 内默认 Loki Server 镜像 tag 为 3.6.11） |
 | 来源 | [grafana/helm-charts](https://github.com/grafana/helm-charts)（官方 Helm 仓库） |
-| Pixiu 默认调整 | 所有镜像已替换为华为云 SWR mirror（`swr.cn-north-4.myhuaweicloud.com/pixiu-public/loki/`） |
+| Pixiu 默认调整 | 所有镜像已替换为华为云 SWR mirror（`swr.cn-north-4.myhuaweicloud.com/pixiu-public/grafana/`） |
 
 > 下列镜像按本仓库 Chart 包内 **默认 values** 整理（`deploymentMode: SingleBinary`，内置 memcached 缓存默认开启）。Loki 7.x 默认部署需要配置存储后端（对象存储或 filesystem）后才能正常安装。
 
@@ -16,13 +16,13 @@
 
 | 组件 | 原生镜像 | mirror 镜像 | 说明 |
 | --- | --- | --- | --- |
-| loki server | `docker.io/grafana/loki:3.6.11` | `swr.cn-north-4.myhuaweicloud.com/pixiu-public/loki/loki:3.6.11` | Loki 单二进制 Deployment |
-| loki-canary | `docker.io/grafana/loki-canary:3.6.16` | `swr.cn-north-4.myhuaweicloud.com/pixiu-public/loki/loki-canary:3.6.16` | 写入/读取探活 Canary DaemonSet |
-| helm-test | `docker.io/grafana/loki-helm-test:latest` | `swr.cn-north-4.myhuaweicloud.com/pixiu-public/loki/loki-helm-test:latest` | `helm test` Pod |
-| gateway | `docker.io/nginxinc/nginx-unprivileged:1.29-alpine` | `swr.cn-north-4.myhuaweicloud.com/pixiu-public/loki/nginx-unprivileged:1.29-alpine` | nginx 网关（`gateway.enabled` 默认 true） |
-| memcached | `memcached:1.6.39-alpine` | `swr.cn-north-4.myhuaweicloud.com/pixiu-public/loki/memcached:1.6.39-alpine` | chunks/results 内置缓存 |
-| memcached-exporter | `prom/memcached-exporter:v0.15.4` | `swr.cn-north-4.myhuaweicloud.com/pixiu-public/loki/memcached-exporter:v0.15.4` | 缓存指标导出 |
-| k8s-sidecar | `docker.io/kiwigrid/k8s-sidecar:2.5.0` | `swr.cn-north-4.myhuaweicloud.com/pixiu-public/loki/k8s-sidecar:2.5.0` | rules/dashboards 配置 sidecar |
+| loki server | `docker.io/grafana/loki:3.6.11` | `swr.cn-north-4.myhuaweicloud.com/pixiu-public/grafana/loki:3.6.11` | Loki 单二进制 Deployment |
+| loki-canary | `docker.io/grafana/loki-canary:3.6.16` | `swr.cn-north-4.myhuaweicloud.com/pixiu-public/grafana/loki-canary:3.6.16` | 写入/读取探活 Canary DaemonSet |
+| helm-test | `docker.io/grafana/loki-helm-test:latest` | `swr.cn-north-4.myhuaweicloud.com/pixiu-public/grafana/loki-helm-test:latest` | `helm test` Pod |
+| gateway | `docker.io/nginxinc/nginx-unprivileged:1.29-alpine` | `swr.cn-north-4.myhuaweicloud.com/pixiu-public/grafana/nginx-unprivileged:1.29-alpine` | nginx 网关（`gateway.enabled` 默认 true） |
+| memcached | `memcached:1.6.39-alpine` | `swr.cn-north-4.myhuaweicloud.com/pixiu-public/grafana/memcached:1.6.39-alpine` | chunks/results 内置缓存 |
+| memcached-exporter | `prom/memcached-exporter:v0.15.4` | `swr.cn-north-4.myhuaweicloud.com/pixiu-public/grafana/memcached-exporter:v0.15.4` | 缓存指标导出 |
+| k8s-sidecar | `docker.io/kiwigrid/k8s-sidecar:2.5.0` | `swr.cn-north-4.myhuaweicloud.com/pixiu-public/grafana/k8s-sidecar:2.5.0` | rules/dashboards 配置 sidecar |
 
 ## 默认不启用（可选）
 
@@ -47,7 +47,7 @@ docker.io/kiwigrid/k8s-sidecar:2.5.0
 
 ## 离线 / 私有仓库建议
 
-1. 将上面的原生镜像 push 到 `swr.cn-north-4.myhuaweicloud.com/pixiu-public/loki/`（保持 tag 不变）；
+1. 将上面的原生镜像 push 到 `swr.cn-north-4.myhuaweicloud.com/pixiu-public/grafana/`（保持 tag 不变）；
 2. Chart 包内默认 values 已指向 SWR mirror，离线环境开箱即用；
 3. 若使用其他私有仓库，按 `loki.image.repository`、`lokiCanary.image.repository`、`gateway.image.repository`、`memcached.image.repository`、`memcachedExporter.image.repository`、`sidecar.image.repository` 等整体替换前缀。
 
