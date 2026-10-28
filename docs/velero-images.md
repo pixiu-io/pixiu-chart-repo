@@ -5,7 +5,7 @@
 | 项 | 值 |
 | --- | --- |
 | Chart | [velero](https://github.com/vmware-tanzu/helm-charts/tree/main/charts/velero) |
-| Chart 版本 | **12.2.1**（仓库文件：`charts/velero-12.2.1.tgz`；Pixiu 修订包（同版本重打）：默认不预置 BackupStorageLocation / VolumeSnapshotLocation，并默认携带 velero-plugin-for-aws 对象存储插件） |
+| Chart 版本 | **12.2.1**（仓库文件：`charts/velero-12.2.1.tgz`） |
 | appVersion | **1.18.2**（Velero 版本） |
 | 来源 | [vmware-tanzu/helm-charts](https://github.com/vmware-tanzu/helm-charts) |
 | Pixiu 默认调整 | 所有镜像已替换为华为云 SWR mirror（`swr.cn-north-4.myhuaweicloud.com/pixiu-public/velero/`） |
