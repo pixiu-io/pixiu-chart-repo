@@ -20,7 +20,7 @@
 | 项 | 值 |
 | --- | --- |
 | Chart | [velero](https://github.com/vmware-tanzu/helm-charts/tree/main/charts/velero) |
-| Chart 版本 | **12.2.1**（仓库文件：`charts/velero-12.2.1.tgz`，Pixiu 同版本重打修订包） |
+| Chart 版本 | **12.2.1**（仓库文件：`charts/velero-12.2.1.tgz`） |
 | appVersion | **1.18.2**（Velero 版本） |
 | 来源 | [vmware-tanzu/helm-charts](https://github.com/vmware-tanzu/helm-charts) |
 | 镜像清单 | [docs/velero-images.md](docs/velero-images.md) |
