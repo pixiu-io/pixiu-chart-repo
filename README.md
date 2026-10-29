@@ -10,46 +10,46 @@
 
 ## 可观测性
 
-| 组件 | Chart | 仓库版本 | 详情 |
-| --- | --- | --- | --- |
-| [Prometheus Operator](docs/components/prometheus-operator.md) | kube-prometheus-stack | **92.11.0**<br><sub>charts/kube-prometheus-stack-92.11.0.tgz</sub> | <sub>[查看](docs/components/prometheus-operator.md)</sub> |
-| [Loki](docs/components/loki.md) | loki | **7.5.0**<br><sub>charts/loki-7.5.0.tgz</sub> | <sub>[查看](docs/components/loki.md)</sub> |
-| [Promtail](docs/components/promtail.md) | promtail | **6.17.1**<br><sub>charts/promtail-6.17.1.tgz</sub> | <sub>[查看](docs/components/promtail.md)</sub> |
-| [Elasticsearch](docs/components/elasticsearch.md) | elasticsearch | **8.5.1**<br><sub>charts/elasticsearch-8.5.1.tgz</sub> | <sub>[查看](docs/components/elasticsearch.md)</sub> |
+| 组件 | Chart | 仓库版本 | appVersion | 详情 |
+| --- | --- | --- | --- | --- |
+| [Prometheus Operator](docs/components/prometheus-operator.md) | kube-prometheus-stack | **92.11.0**<br><sub>charts/kube-prometheus-stack-92.11.0.tgz</sub> | **v0.94.1** | <sub>[查看](docs/components/prometheus-operator.md)</sub> |
+| [Loki](docs/components/loki.md) | loki | **7.5.0**<br><sub>charts/loki-7.5.0.tgz</sub> | **3.6.16** | <sub>[查看](docs/components/loki.md)</sub> |
+| [Promtail](docs/components/promtail.md) | promtail | **6.17.1**<br><sub>charts/promtail-6.17.1.tgz</sub> | **3.5.1** | <sub>[查看](docs/components/promtail.md)</sub> |
+| [Elasticsearch](docs/components/elasticsearch.md) | elasticsearch | **8.5.1**<br><sub>charts/elasticsearch-8.5.1.tgz</sub> | **8.5.1** | <sub>[查看](docs/components/elasticsearch.md)</sub> |
 
 ## 存储与备份
 
-| 组件 | Chart | 仓库版本 | 详情 |
-| --- | --- | --- | --- |
-| [Longhorn](docs/components/longhorn.md) | longhorn | **1.13.0**<br><sub>charts/longhorn-1.13.0.tgz</sub><br>**1.12.1**<br><sub>charts/longhorn-1.12.1.tgz</sub> | <sub>[查看](docs/components/longhorn.md)</sub> |
-| [MinIO](docs/components/minio.md) | minio | **5.4.0**<br><sub>charts/minio-5.4.0.tgz</sub> | <sub>[查看](docs/components/minio.md)</sub> |
-| [Velero](docs/components/velero.md) | velero | **12.2.1**<br><sub>charts/velero-12.2.1.tgz</sub> | <sub>[查看](docs/components/velero.md)</sub> |
+| 组件 | Chart | 仓库版本 | appVersion | 详情 |
+| --- | --- | --- | --- | --- |
+| [Longhorn](docs/components/longhorn.md) | longhorn | **1.13.0**<br><sub>charts/longhorn-1.13.0.tgz</sub><br>**1.12.1**<br><sub>charts/longhorn-1.12.1.tgz</sub> | **v1.13.0** / **v1.12.1** | <sub>[查看](docs/components/longhorn.md)</sub> |
+| [MinIO](docs/components/minio.md) | minio | **5.4.0**<br><sub>charts/minio-5.4.0.tgz</sub> | **RELEASE.2025-09-07T16-13-09Z** | <sub>[查看](docs/components/minio.md)</sub> |
+| [Velero](docs/components/velero.md) | velero | **12.2.1**<br><sub>charts/velero-12.2.1.tgz</sub> | **1.18.2** | <sub>[查看](docs/components/velero.md)</sub> |
 
 ## 网络与安全
 
-| 组件 | Chart | 仓库版本 | 详情 |
-| --- | --- | --- | --- |
-| [Ingress NGINX](docs/components/ingress-nginx.md) | ingress-nginx | **4.15.1**<br><sub>charts/ingress-nginx-4.15.1.tgz</sub> | <sub>[查看](docs/components/ingress-nginx.md)</sub> |
-| [Cert-manager](docs/components/cert-manager.md) | cert-manager | **v1.21.3**<br><sub>charts/cert-manager-v1.21.3.tgz</sub> | <sub>[查看](docs/components/cert-manager.md)</sub> |
+| 组件 | Chart | 仓库版本 | appVersion | 详情 |
+| --- | --- | --- | --- | --- |
+| [Ingress NGINX](docs/components/ingress-nginx.md) | ingress-nginx | **4.15.1**<br><sub>charts/ingress-nginx-4.15.1.tgz</sub> | **1.15.1** | <sub>[查看](docs/components/ingress-nginx.md)</sub> |
+| [Cert-manager](docs/components/cert-manager.md) | cert-manager | **v1.21.3**<br><sub>charts/cert-manager-v1.21.3.tgz</sub> | **v1.21.3** | <sub>[查看](docs/components/cert-manager.md)</sub> |
 
 ## 数据库与中间件
 
-| 组件 | Chart | 仓库版本 | 详情 |
-| --- | --- | --- | --- |
-| [MySQL Operator](docs/components/mysql-operator.md) | mysql-operator | **2.3.1**<br><sub>charts/mysql-operator-2.3.1.tgz</sub> | <sub>[查看](docs/components/mysql-operator.md)</sub> |
-| [Redis Operator](docs/components/redis-operator.md) | redis-operator | **0.27.0**<br><sub>charts/redis-operator-0.27.0.tgz</sub> | <sub>[查看](docs/components/redis-operator.md)</sub> |
+| 组件 | Chart | 仓库版本 | appVersion | 详情 |
+| --- | --- | --- | --- | --- |
+| [MySQL Operator](docs/components/mysql-operator.md) | mysql-operator | **2.3.1**<br><sub>charts/mysql-operator-2.3.1.tgz</sub> | **26.10.0-2.3.1** | <sub>[查看](docs/components/mysql-operator.md)</sub> |
+| [Redis Operator](docs/components/redis-operator.md) | redis-operator | **0.27.0**<br><sub>charts/redis-operator-0.27.0.tgz</sub> | **0.27.0** | <sub>[查看](docs/components/redis-operator.md)</sub> |
 
 ## 镜像仓库
 
-| 组件 | Chart | 仓库版本 | 详情 |
-| --- | --- | --- | --- |
-| [Harbor](docs/components/harbor.md) | harbor | **1.19.4**<br><sub>charts/harbor-1.19.4.tgz</sub> | <sub>[查看](docs/components/harbor.md)</sub> |
+| 组件 | Chart | 仓库版本 | appVersion | 详情 |
+| --- | --- | --- | --- | --- |
+| [Harbor](docs/components/harbor.md) | harbor | **1.19.4**<br><sub>charts/harbor-1.19.4.tgz</sub> | **2.15.4** | <sub>[查看](docs/components/harbor.md)</sub> |
 
 ## GPU 与加速
 
-| 组件 | Chart | 仓库版本 | 详情 |
-| --- | --- | --- | --- |
-| [GPU Operator](docs/components/gpu-operator.md) | gpu-operator | **v26.7.2**<br><sub>charts/gpu-operator-v26.7.2.tgz</sub> | <sub>[查看](docs/components/gpu-operator.md)</sub> |
+| 组件 | Chart | 仓库版本 | appVersion | 详情 |
+| --- | --- | --- | --- | --- |
+| [GPU Operator](docs/components/gpu-operator.md) | gpu-operator | **v26.7.2**<br><sub>charts/gpu-operator-v26.7.2.tgz</sub> | **v26.7.2** | <sub>[查看](docs/components/gpu-operator.md)</sub> |
 
 # 仓库约定
 
