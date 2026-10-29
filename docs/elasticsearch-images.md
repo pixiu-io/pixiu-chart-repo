@@ -8,7 +8,7 @@
 | Chart 版本 | **8.5.1**（仓库文件：`charts/elasticsearch-8.5.1.tgz`） |
 | appVersion | **8.5.1**（Elasticsearch 版本） |
 | 来源 | [helm.elastic.co](https://helm.elastic.co)（Elastic 官方 Helm 仓库最新稳定版） |
-| Pixiu 默认调整 | 镜像已替换为华为云 SWR mirror（`swr.cn-north-4.myhuaweicloud.com/pixiu-public/elasticsearch/`） |
+| Pixiu 默认调整 | 镜像替换为华为云 SWR mirror；默认 values 调整为开箱即装：单副本（minimumMasterNodes 1）+ JVM 512m + 小资源 + PVC 5Gi |
 
 > 下列镜像按本仓库 Chart 包内 **默认 values** 整理。默认部署为 3 节点 StatefulSet（master/data 复合角色），所有节点共用同一镜像。
 
@@ -42,14 +42,14 @@ docker.elastic.co/elasticsearch/elasticsearch:8.5.1
 
 - Chart 8.5.1 是 Elastic 官方 Helm 仓库（helm.elastic.co）当前最新稳定版；Elastic 在 8.5.1 之后已将 Elastic Stack Helm Charts 移交社区并归档（`elastic/helm-charts` 仓库 archived），后续版本官方推荐通过 ECK Operator 部署，不再发布传统 chart。
 - Elasticsearch 安全自检（`xpack.security.enabled` 等）沿用 chart 默认值；默认开启 TLS 传输层认证（secret-cert.yaml），service 端口 `9200`（HTTP）/ `9300`（transport）。
-- 默认资源请求较大（每节点约 2C4G + JVM 1G），小规格集群可按需调低 `resources` / `heapSize`。
+- 默认资源已调低（单副本 + JVM 512m + requests 200m/512Mi + PVC 5Gi），单节点/小规格集群开箱即装；生产多节点集群请改回 replicas: 3 / minimumMasterNodes: 2 并调大资源与存储。
 - 应用商店安装实录见下方「应用商店安装实录」章节。
 
 ## 应用商店安装实录（2026-10-29，pixiu-dev 单节点）
 
 平台安装记录：`pixiu-system`，deploy_status=success / deployed；**实际资源（sts/PVC/Pod）落在 `default` 命名空间**（与 minio 落点一致，见踩坑 3）。
 
-### 实测通过的安装 values（单节点瘦身）
+### 实测通过的安装 values（已内化为 Chart 默认值，开箱即装；以下为调整前的手工 values 存档）
 
 ```json
 {
@@ -64,7 +64,7 @@ docker.elastic.co/elasticsearch/elasticsearch:8.5.1
 
 ### 踩坑与解决
 
-1. **默认资源在单节点装不下**：默认 3 副本、每副本 1C2G + 30Gi PVC；必须 `replicas: 1` + 压低 requests/heap + 小 PVC。
+1. **默认资源在单节点装不下（已内化修复）**：上游默认 3 副本、每副本 1C2G + 30Gi PVC；Chart 默认值已改为 `replicas: 1` + requests 200m/512Mi + JVM 512m + 5Gi PVC。生产多节点集群按需改回。
 2. **调度失败 Insufficient memory**：节点实际用量很低，但各 Pod **requests 汇总**已占满 allocatable。压到 requests 512Mi 仍未通过，最终 patch StatefulSet requests 到 128Mi 才调度成功（注意 patch 会被下次 helm upgrade 覆盖，根治需释放其它组件 requests 或扩节点）。
 3. **命名空间不一致**：平台安装记录写 `pixiu-system`（helm release secret 也在 pixiu-system），但 sts/PVC/Pod 实际在 `default`。验证 Pod 时用 `kubectl get sts -A` 别只盯记录。
 4. **平台多副本下 chart 包文件丢失**：安装报 `chart package not found: stat /etc/pixiu/appstore/charts/elasticsearch-8.5.1.tgz`，需「删 Chart → 重传 → 重装」循环重试（平台级问题，见 [appstore-chart-guide.md](./appstore-chart-guide.md)）。

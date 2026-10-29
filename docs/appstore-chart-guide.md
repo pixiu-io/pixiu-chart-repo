@@ -181,6 +181,8 @@ curl -s "https://console.cloud.pixiuio.com/pixiu/apps/clusters/$CLUSTER/installs
 
 各 Chart 的安装 values 与 Chart 级踩坑见对应镜像文档的「应用商店安装实录」章节：[loki-images.md](./loki-images.md)、[promtail-images.md](./promtail-images.md)、[elasticsearch-images.md](./elasticsearch-images.md)。三个应用均 deployed 且功能验证通过：Loki 网关查询正常并收到 promtail 日志流（push 204）；ES `_cluster/health` = green（https + basic auth）。
 
+> 后续将 values 层面的修复内化到了 Chart 默认值（loki：SingleBinary + filesystem + schemaConfig + 5Gi；promtail：tenant_id；elasticsearch：单副本小资源 + 5Gi），新装这三个 Chart 已无需传自定义 values，见各镜像文档「Pixiu 默认调整」。
+
 ## 验证方式
 
 1. 本地：`python3 scripts/check-chart-tgz.py <包>`（无 `._*` / `.DS_Store` / `__MACOSX`）

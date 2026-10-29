@@ -8,9 +8,9 @@
 | Chart 版本 | **7.5.0**（仓库文件：`charts/loki-7.5.0.tgz`） |
 | appVersion | **3.6.16**（Chart 内默认 Loki Server 镜像 tag 为 3.6.11） |
 | 来源 | [grafana/helm-charts](https://github.com/grafana/helm-charts)（官方 Helm 仓库） |
-| Pixiu 默认调整 | 所有镜像已替换为华为云 SWR mirror（`swr.cn-north-4.myhuaweicloud.com/pixiu-public/grafana/`） |
+| Pixiu 默认调整 | 镜像替换为华为云 SWR mirror；默认 values 调整为开箱即装：SingleBinary 1 副本 + replication_factor 1 + filesystem 存储 + 内置 schemaConfig + PVC 5Gi |
 
-> 下列镜像按本仓库 Chart 包内 **默认 values** 整理（`deploymentMode: SingleBinary`，内置 memcached 缓存默认开启）。Loki 7.x 默认部署需要配置存储后端（对象存储或 filesystem）后才能正常安装。
+> 下列镜像按本仓库 Chart 包内 **默认 values** 整理（`deploymentMode: SingleBinary`，内置 memcached 缓存默认开启）。默认 values 已内置 filesystem 存储与 schemaConfig，开箱即装；使用对象存储的集群可改回 s3 并配置 bucketNames。
 
 ## 默认会拉取的镜像
 
@@ -54,7 +54,13 @@ docker.io/kiwigrid/k8s-sidecar:2.5.0
 ## 备注
 
 - Chart 7.5.0 为 grafana 官方仓库当前最新稳定版。
-- Loki 7.x 单二进制模式（SingleBinary）默认带 1 个 canary、gateway 与内置 memcached；如需最小化部署，可关闭 `gateway`、`lokiCanary`、`test`、`memcached`。
+- Pixiu 对默认 values 的调整（上游默认 `SimpleScalable` 模式、s3 存储、无 schemaConfig，直接安装会失败）：
+  - `deploymentMode: SingleBinary` + `singleBinary.replicas: 1`（上游默认 0），write/read/backend 副本默认 0
+  - `loki.commonConfig.replication_factor: 1`（上游 3）
+  - `loki.storage.type: filesystem`（上游 s3，需 bucket）
+  - `loki.schemaConfig`：tsdb + v13 + filesystem，from 2024-01-01
+  - `singleBinary.persistence.size: 5Gi`（上游 10Gi，小磁盘集群 Longhorn 调度预检友好）
+- 需要大规模部署时：改回 `SimpleScalable`/`Distributed` 模式并调高 write/read/backend 副本、replication_factor，存储改 s3/oss。
 - Promtail 通过独立的 `promtail` chart（同仓库 `charts/promtail-6.17.1.tgz`）部署，作为 Loki 的日志采集端。
 - 应用商店安装实录见下方「应用商店安装实录」章节。
 
@@ -62,7 +68,7 @@ docker.io/kiwigrid/k8s-sidecar:2.5.0
 
 平台安装记录：`pixiu-system`，deploy_status=success / deployed。
 
-### 实测通过的安装 values（单二进制 + filesystem，适配单节点离线集群）
+### 实测通过的安装 values（已内化为 Chart 默认值，开箱即装；以下为调整前的手工 values 存档）
 
 ```json
 {
