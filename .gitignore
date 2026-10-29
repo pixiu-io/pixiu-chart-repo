@@ -1,0 +1,16 @@
+# IDE / 编辑器
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+*~
+
+# macOS / Windows
+.DS_Store
+._*
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc

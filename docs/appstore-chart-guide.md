@@ -42,7 +42,7 @@ helm template test ./mychart-*.tgz -n default >/dev/null
 
 # 4) 归档到本仓库并补文档
 mv ./mychart-*.tgz charts/
-# 新增/更新 docs/<chart>-images.md、根 README 组件表、docs/README 索引
+# 新增/更新 docs/<chart>-images.md、docs/components/<chart>.md、根 README 组件表、docs/README 索引
 ```
 
 **为何规定用 `helm package`：**
@@ -100,6 +100,7 @@ python3 scripts/check-chart-tgz.py --fix charts/velero-12.2.1.tgz
 
 - 将 values 中各组件 `image` 改为目标集群可达的私有仓库地址（离线部署需提前推送）
 - 参考同目录镜像文档（如 [prometheus-images.md](./prometheus-images.md)、[velero-images.md](./velero-images.md)、[gpu-operator-images.md](./gpu-operator-images.md)、[ingress-nginx-images.md](./ingress-nginx-images.md)）的「mirror 镜像」列与「原生镜像」清单
+- 组件详情（版本、镜像、安装说明与常见问题）见 `docs/components/<chart>.md`，如 [components/prometheus-operator.md](./components/prometheus-operator.md)、[components/velero.md](./components/velero.md)、[components/gpu-operator.md](./components/gpu-operator.md)、[components/ingress-nginx.md](./components/ingress-nginx.md)
 - 验证：`helm template <包> -n <ns> | grep image:`，确认无上游不可达地址
 - 改完 values 后按「标准流程」用 **`helm package` 重新打包**，不要只用 `tar` 盖回去
 

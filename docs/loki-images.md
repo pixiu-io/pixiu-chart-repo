@@ -64,7 +64,7 @@ docker.io/kiwigrid/k8s-sidecar:2.5.0
 
 平台安装记录：`pixiu-system`，deploy_status=success / deployed。
 
-### 实测通过的安装 values（已内化为 Chart 默认值，开箱即装；PVC 大小保持上游 10Gi）
+### 实测通过的安装 values（`deploymentMode`、`singleBinary`、`storage`、`schemaConfig` 已内化为 Chart 默认值；本例 PVC 5Gi 为实测值，Chart 默认 10Gi；`test` 与 `lokiCanary` 默认开启，安装时需显式关闭）
 
 ```json
 {

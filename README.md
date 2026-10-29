@@ -1,136 +1,77 @@
-# Pixiu 应用商店仓库
+# Pixiu 应用商店 Chart 仓库
 
-本仓库存放 Pixiu 应用商店使用的 Chart 包。
+本仓库存放 Pixiu 应用商店使用的 Helm Chart 包。
 
-文档索引: [docs/README.md](docs/README.md)（应用商店 Chart 添加说明）
+[文档索引](docs/README.md) · [上架与打包规范](docs/appstore-chart-guide.md) · [charts/](charts)
+
+快速导航：[可观测性](#可观测性) · [存储与备份](#存储与备份) · [网络与安全](#网络与安全) · [数据库与中间件](#数据库与中间件) · [镜像仓库](#镜像仓库) · [GPU-与加速](#gpu-与加速)
 
 # 组件列表
-## Prometheus Operator
 
-| 项 | 值 |
+## 可观测性
+
+| 组件 | Chart | 仓库版本 | appVersion | 用途 | 详情 |
+| --- | --- | --- | --- | --- | --- |
+| [Prometheus Operator](docs/components/prometheus-operator.md) | kube-prometheus-stack | **92.11.0**<br><sub>charts/kube-prometheus-stack-92.11.0.tgz</sub> | **v0.94.1** | Prometheus 监控栈，可部署 Prometheus Operator、Alertmanager、Grafana 与默认告警规则（仓库默认关闭 Grafana/Alertmanager） | [查看](docs/components/prometheus-operator.md) |
+| [Loki](docs/components/loki.md) | loki | **7.5.0**<br><sub>charts/loki-7.5.0.tgz</sub> | **3.6.16** | 水平可扩展、多租户的日志聚合系统 | [查看](docs/components/loki.md) |
+| [Promtail](docs/components/promtail.md) | promtail | **6.17.1**<br><sub>charts/promtail-6.17.1.tgz</sub> | **3.5.1** | 采集日志并推送至 Loki 的日志代理 | [查看](docs/components/promtail.md) |
+| [Elasticsearch](docs/components/elasticsearch.md) | elasticsearch | **8.5.1**<br><sub>charts/elasticsearch-8.5.1.tgz</sub> | **8.5.1** | 分布式搜索与分析引擎 | [查看](docs/components/elasticsearch.md) |
+
+## 存储与备份
+
+| 组件 | Chart | 仓库版本 | appVersion | 用途 | 详情 |
+| --- | --- | --- | --- | --- | --- |
+| [Longhorn](docs/components/longhorn.md) | longhorn | **1.13.0**<br><sub>charts/longhorn-1.13.0.tgz</sub><br>**1.12.1**<br><sub>charts/longhorn-1.12.1.tgz</sub> | **v1.13.0** / **v1.12.1** | Kubernetes 原生分布式块存储 | [查看](docs/components/longhorn.md) |
+| [MinIO](docs/components/minio.md) | minio | **5.4.0**<br><sub>charts/minio-5.4.0.tgz</sub> | **RELEASE.2025-09-07T16-13-09Z** | 兼容 S3 的对象存储服务 | [查看](docs/components/minio.md) |
+| [Velero](docs/components/velero.md) | velero | **12.2.1**<br><sub>charts/velero-12.2.1.tgz</sub> | **1.18.2** | Kubernetes 集群备份、恢复与迁移工具 | [查看](docs/components/velero.md) |
+
+## 网络与安全
+
+| 组件 | Chart | 仓库版本 | appVersion | 用途 | 详情 |
+| --- | --- | --- | --- | --- | --- |
+| [Ingress NGINX](docs/components/ingress-nginx.md) | ingress-nginx | **4.15.1**<br><sub>charts/ingress-nginx-4.15.1.tgz</sub> | **1.15.1** | 基于 NGINX 的 Kubernetes Ingress 控制器 | [查看](docs/components/ingress-nginx.md) |
+| [Cert-manager](docs/components/cert-manager.md) | cert-manager | **v1.21.3**<br><sub>charts/cert-manager-v1.21.3.tgz</sub> | **v1.21.3** | 自动化 TLS 证书签发与续期 | [查看](docs/components/cert-manager.md) |
+
+## 数据库与中间件
+
+| 组件 | Chart | 仓库版本 | appVersion | 用途 | 详情 |
+| --- | --- | --- | --- | --- | --- |
+| [MySQL Operator](docs/components/mysql-operator.md) | mysql-operator | **2.3.1**<br><sub>charts/mysql-operator-2.3.1.tgz</sub> | **26.10.0-2.3.1** | 在 Kubernetes 上部署与管理 MySQL InnoDB Cluster | [查看](docs/components/mysql-operator.md) |
+| [Redis Operator](docs/components/redis-operator.md) | redis-operator | **0.27.0**<br><sub>charts/redis-operator-0.27.0.tgz</sub> | **0.27.0** | 在 Kubernetes 上管理 Redis、Redis Sentinel 与 Redis Cluster | [查看](docs/components/redis-operator.md) |
+
+## 镜像仓库
+
+| 组件 | Chart | 仓库版本 | appVersion | 用途 | 详情 |
+| --- | --- | --- | --- | --- | --- |
+| [Harbor](docs/components/harbor.md) | harbor | **1.19.4**<br><sub>charts/harbor-1.19.4.tgz</sub> | **2.15.4** | 云原生镜像仓库 | [查看](docs/components/harbor.md) |
+
+## GPU 与加速
+
+| 组件 | Chart | 仓库版本 | appVersion | 用途 | 详情 |
+| --- | --- | --- | --- | --- | --- |
+| [GPU Operator](docs/components/gpu-operator.md) | gpu-operator | **v26.7.2**<br><sub>charts/gpu-operator-v26.7.2.tgz</sub> | **v26.7.2** | NVIDIA GPU 驱动、容器运行时与设备插件的自动化管理 | [查看](docs/components/gpu-operator.md) |
+
+# 仓库约定
+
+| 目录 / 文件 | 说明 |
 | --- | --- |
-| Chart | [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) |
-| Chart 版本 | **92.11.0**（仓库文件：`charts/kube-prometheus-stack-92.11.0.tgz`） |
-| appVersion | **v0.94.1**（Prometheus Operator 版本） |
-| 来源 | [prometheus-community/helm-charts](https://github.com/prometheus-community/helm-charts/) |
-| 镜像清单 | [docs/prometheus-images.md](docs/prometheus-images.md) |
+| [charts/](charts) | Helm Chart 归档包（`.tgz`） |
+| [docs/](docs) | 镜像清单与上架规范文档 |
+| [docs/components/](docs/components) | 组件详情页 |
+| [scripts/check-chart-tgz.py](scripts/check-chart-tgz.py) | Chart 包自检脚本（清理 macOS 元数据残留） |
 
-## Velero
+打包与自检：
 
-| 项 | 值 |
-| --- | --- |
-| Chart | [velero](https://github.com/vmware-tanzu/helm-charts/tree/main/charts/velero) |
-| Chart 版本 | **12.2.1**（仓库文件：`charts/velero-12.2.1.tgz`） |
-| appVersion | **1.18.2**（Velero 版本） |
-| 来源 | [vmware-tanzu/helm-charts](https://github.com/vmware-tanzu/helm-charts) |
-| 镜像清单 | [docs/velero-images.md](docs/velero-images.md) |
+```bash
+COPYFILE_DISABLE=1 helm package ./chart
+python3 scripts/check-chart-tgz.py charts/*.tgz
+```
 
-## GPU Operator
+新增组件流程：
 
-| 项 | 值 |
-| --- | --- |
-| Chart | [gpu-operator](https://github.com/NVIDIA/gpu-operator) |
-| Chart 版本 | **v26.7.2**（仓库文件：`charts/gpu-operator-v26.7.2.tgz`） |
-| appVersion | **v26.7.2** |
-| 来源 | [NVIDIA GPU Operator](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html) |
-| 镜像清单 | [docs/gpu-operator-images.md](docs/gpu-operator-images.md) |
+1. 打 chart：`COPYFILE_DISABLE=1 helm package ./chart`，产物归档到 `charts/`
+2. 补 `docs/<chart>-images.md` 镜像清单
+3. 新增 `docs/components/<chart>.md` 组件详情
+4. 更新本 README 分类表与 [docs/README.md](docs/README.md) 索引
 
-## Ingress NGINX
-
-| 项 | 值 |
-| --- | --- |
-| Chart | [ingress-nginx](https://github.com/kubernetes/ingress-nginx/tree/main/charts/ingress-nginx) |
-| Chart 版本 | **4.15.1**（仓库文件：`charts/ingress-nginx-4.15.1.tgz`） |
-| appVersion | **1.15.1** |
-| 来源 | [kubernetes/ingress-nginx](https://github.com/kubernetes/ingress-nginx) |
-| 镜像清单 | [docs/ingress-nginx-images.md](docs/ingress-nginx-images.md) |
-
-## MinIO
-
-| 项 | 值 |
-| --- | --- |
-| Chart | [minio](https://github.com/minio/charts/tree/master/minio)（上游仓库已归档，链接当前 404） |
-| Chart 版本 | **5.4.0**（仓库文件：`charts/minio-5.4.0.tgz`） |
-| appVersion | **RELEASE.2025-09-07T16-13-09Z** |
-| 来源 | [charts.min.io](https://charts.min.io/)（官方 Helm 仓库，已停止更新） |
-| 镜像清单 | [docs/minio-images.md](docs/minio-images.md) |
-
-## Loki
-
-| 项 | 值 |
-| --- | --- |
-| Chart | [loki](https://github.com/grafana/loki/tree/main/production/helm/loki) |
-| Chart 版本 | **7.5.0**（仓库文件：`charts/loki-7.5.0.tgz`） |
-| appVersion | **3.6.16**（默认镜像 tag 3.6.11） |
-| 来源 | [grafana/helm-charts](https://github.com/grafana/helm-charts) 官方 Helm 仓库最新稳定版 |
-| 镜像清单 | [docs/loki-images.md](docs/loki-images.md) |
-
-## Promtail
-
-| 项 | 值 |
-| --- | --- |
-| Chart | [promtail](https://github.com/grafana/helm-charts/tree/main/charts/promtail) |
-| Chart 版本 | **6.17.1**（仓库文件：`charts/promtail-6.17.1.tgz`） |
-| appVersion | **3.5.1** |
-| 来源 | [grafana/helm-charts](https://github.com/grafana/helm-charts) 官方 Helm 仓库最新稳定版 |
-| 镜像清单 | [docs/promtail-images.md](docs/promtail-images.md) |
-
-## Cert-manager
-
-| 项 | 值 |
-| --- | --- |
-| Chart | [cert-manager](https://github.com/cert-manager/cert-manager/tree/master/deploy/charts/cert-manager) |
-| Chart 版本 | **v1.21.3**（仓库文件：`charts/cert-manager-v1.21.3.tgz`） |
-| appVersion | **v1.21.3** |
-| 来源 | [jetstack](https://charts.jetstack.io) 官方 Helm 仓库最新稳定版 |
-| 镜像清单 | [docs/cert-manager-images.md](docs/cert-manager-images.md) |
-
-## Longhorn
-
-| 项 | 值 |
-| --- | --- |
-| Chart | [longhorn](https://github.com/longhorn/longhorn) |
-| Chart 版本 | **1.13.0**（仓库文件：`charts/longhorn-1.13.0.tgz`，K8s ≥1.34）；**1.12.1**（仓库文件：`charts/longhorn-1.12.1.tgz`，K8s ≥1.25，适用 1.28.x） |
-| appVersion | **v1.13.0** / **v1.12.1** |
-| 来源 | [charts.longhorn.io](https://charts.longhorn.io) 官方 Helm 仓库最新稳定版 |
-| 镜像清单 | [docs/longhorn-images.md](docs/longhorn-images.md) |
-
-## Elasticsearch
-
-| 项 | 值 |
-| --- | --- |
-| Chart | [elasticsearch](https://github.com/elastic/helm-charts/tree/main/elasticsearch) |
-| Chart 版本 | **8.5.1**（仓库文件：`charts/elasticsearch-8.5.1.tgz`） |
-| appVersion | **8.5.1**（Elasticsearch 版本） |
-| 来源 | [helm.elastic.co](https://helm.elastic.co) 官方 Helm 仓库最新稳定版 |
-| 镜像清单 | [docs/elasticsearch-images.md](docs/elasticsearch-images.md) |
-
-## Harbor
-
-| 项 | 值 |
-| --- | --- |
-| Chart | [harbor](https://github.com/goharbor/harbor-helm) |
-| Chart 版本 | **1.19.4**（仓库文件：`charts/harbor-1.19.4.tgz`） |
-| appVersion | **2.15.4**（Harbor 版本） |
-| 来源 | [helm.goharbor.io](https://helm.goharbor.io) 官方 Helm 仓库最新稳定版 |
-| 镜像清单 | [docs/harbor-images.md](docs/harbor-images.md) |
-
-## Redis Operator
-
-| 项 | 值 |
-| --- | --- |
-| Chart | [redis-operator](https://github.com/OT-CONTAINER-KIT/redis-operator) |
-| Chart 版本 | **0.27.0**（仓库文件：`charts/redis-operator-0.27.0.tgz`） |
-| appVersion | **0.27.0**（Redis Operator 版本） |
-| 来源 | [ot-container-kit.github.io/helm-charts](https://ot-container-kit.github.io/helm-charts/) 官方 Helm 仓库最新稳定版 |
-| 镜像清单 | [docs/redis-operator-images.md](docs/redis-operator-images.md) |
-
-## MySQL Operator
-
-| 项 | 值 |
-| --- | --- |
-| Chart | [mysql-operator](https://github.com/mysql/mysql-operator) |
-| Chart 版本 | **2.3.1**（仓库文件：`charts/mysql-operator-2.3.1.tgz`） |
-| appVersion | **26.10.0-2.3.1**（MySQL 26.10.0 / Operator 2.3.1） |
-| 来源 | [mysql.github.io/mysql-operator](https://mysql.github.io/mysql-operator/) 官方 Helm 仓库最新稳定版 |
-| 镜像清单 | [docs/mysql-operator-images.md](docs/mysql-operator-images.md) |
+完整上架、打包、镜像处理与校验规范见 [docs/appstore-chart-guide.md](docs/appstore-chart-guide.md)。
