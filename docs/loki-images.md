@@ -56,6 +56,43 @@ docker.io/kiwigrid/k8s-sidecar:2.5.0
 - Chart 7.5.0 为 grafana 官方仓库当前最新稳定版。
 - Loki 7.x 单二进制模式（SingleBinary）默认带 1 个 canary、gateway 与内置 memcached；如需最小化部署，可关闭 `gateway`、`lokiCanary`、`test`、`memcached`。
 - Promtail 通过独立的 `promtail` chart（同仓库 `charts/promtail-6.17.1.tgz`）部署，作为 Loki 的日志采集端。
+- 应用商店安装实录见下方「应用商店安装实录」章节。
+
+## 应用商店安装实录（2026-10-29，pixiu-dev 单节点）
+
+平台安装记录：`pixiu-system`，deploy_status=success / deployed。
+
+### 实测通过的安装 values（单二进制 + filesystem，适配单节点离线集群）
+
+```json
+{
+  "deploymentMode": "SingleBinary",
+  "singleBinary": {"replicas": 1, "persistence": {"enabled": true, "size": "5Gi"}},
+  "write": {"replicas": 0}, "read": {"replicas": 0}, "backend": {"replicas": 0},
+  "loki": {
+    "commonConfig": {"replication_factor": 1},
+    "storage": {"type": "filesystem"},
+    "schemaConfig": {"configs": [{
+      "from": "2024-01-01", "store": "tsdb", "object_store": "filesystem",
+      "schema": "v13", "index": {"prefix": "loki_index_", "period": "24h"}
+    }]}
+  },
+  "monitoring": {"enabled": false},
+  "lokiCanary": {"enabled": false},
+  "test": {"enabled": false}
+}
+```
+
+### 踩坑与解决
+
+1. **安装失败：缺少 schema_config** —— 现象：`execution error at (loki/templates/validate.yaml): You must provide a schema_config`。默认 values 不带，必须显式提供 `loki.schemaConfig`（上例 tsdb + v13 + filesystem）。卸载失败 release 后同名重装即可。
+2. **多租户鉴权**：loki 默认 `auth_enabled: true`，gateway 要求 `X-Scope-OrgID`。promtail 等客户端推送需配 `tenant_id`（见 [promtail-images.md](./promtail-images.md)），查询 API 同样要带 `X-Scope-OrgID: <租户>`，否则 401 no org id。
+3. **Longhorn 卷 faulted（insufficient storage）**：单节点集群同时装 loki(5Gi)+ES(5Gi) 超过 Longhorn 可调度余量导致卷 faulted，属平台级问题（含解决方式），见 [appstore-chart-guide.md](./appstore-chart-guide.md)「平台级踩坑」。
+
+### 验证结果
+
+- Pod：loki-0 / loki-gateway / loki-chunks-cache-0 / loki-results-cache-0 全部 Running 且 Ready。
+- 经平台 K8s 服务代理查 `/loki/api/v1/labels`（带 X-Scope-OrgID）返回 app/container/namespace/pod 等标签；`query_range` 能查到 promtail 采集的真实容器日志（含 gateway 自身 access log，promtail push 204）。
 
 ## 参考
 

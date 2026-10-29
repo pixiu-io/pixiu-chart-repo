@@ -45,6 +45,32 @@ ghcr.io/jimmidyson/configmap-reload:v0.12.0
 
 - Chart 6.17.1 为 grafana 官方仓库当前最新稳定版。
 - Promtail 已进入维护模式（Loki 官方推荐新部署使用 Alloy），后续如需迁移另行评估。
+- 应用商店安装实录见下方「应用商店安装实录」章节。
+
+## 应用商店安装实录（2026-10-29，pixiu-dev 单节点）
+
+平台安装记录：`pixiu-system`，deploy_status=success / deployed。默认 values 即可安装成功，但**必须给 client 配 tenant_id**，否则日志推送被 Loki 拒收。
+
+### 实测通过的安装 values（默认值 + tenant_id）
+
+```json
+{
+  "config": {"clients": [
+    {"url": "http://loki-gateway/loki/api/v1/push", "tenant_id": "pixiu"}
+  ]}
+}
+```
+
+### 踩坑与解决
+
+1. **推送 401 no org id**：loki 默认 `auth_enabled: true`，gateway 要求 `X-Scope-OrgID`，promtail 默认配置不带租户头。解决：在安装 values 的 `config.clients[0]` 加 `tenant_id: pixiu`（或在安装后 patch Secret `promtail` 的 `promtail.yaml` 再删 Pod 重建）。
+   > 注意：安装后直接 patch Secret 的方式**会被 promtail 升级覆盖**，重装/升级时务必把 `tenant_id` 写进安装 values。
+2. **lokiUrl 默认值**：默认配置 `http://loki-gateway/loki/api/v1/push`，与 loki 同命名空间（pixiu-system）安装即可直接连通，无需改地址。
+
+### 验证结果
+
+- Pod：DaemonSet 每节点一个 promtail，Running 且 Ready。
+- patch tenant_id 后推送无 401，loki-gateway access log 中 push 请求返回 204；在 Loki 侧（`X-Scope-OrgID: pixiu`）能查到采集的全节点容器日志。
 
 ## 参考
 
