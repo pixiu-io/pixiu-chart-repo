@@ -10,7 +10,7 @@
 | 来源 | [grafana/helm-charts](https://github.com/grafana/helm-charts)（官方 Helm 仓库） |
 | Pixiu 默认调整 | 镜像已替换为华为云 SWR mirror（`swr.cn-north-4.myhuaweicloud.com/pixiu-public/grafana/`） |
 
-> 下列镜像按本仓库 Chart 包内 **默认 values** 整理。Promtail 以 DaemonSet 方式在每个节点采集容器日志，`lokiUrl` 需指向 Loki 的 push 端点。
+> 下列镜像按本仓库 Chart 包内 **默认 values** 整理。Promtail 以 DaemonSet 方式在每个节点采集容器日志，`config.clients` 中的 `url` 需指向 Loki 的 push 端点（默认 `http://loki-gateway/loki/api/v1/push`）。
 
 ## 默认会拉取的镜像
 

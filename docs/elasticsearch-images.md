@@ -42,7 +42,7 @@ docker.elastic.co/elasticsearch/elasticsearch:8.5.1
 
 - Chart 8.5.1 是 Elastic 官方 Helm 仓库（helm.elastic.co）当前最新稳定版；Elastic 在 8.5.1 之后已将 Elastic Stack Helm Charts 移交社区并归档（`elastic/helm-charts` 仓库 archived），后续版本官方推荐通过 ECK Operator 部署，不再发布传统 chart。
 - Elasticsearch 安全自检（`xpack.security.enabled` 等）沿用 chart 默认值；默认开启 TLS 传输层认证（secret-cert.yaml），service 端口 `9200`（HTTP）/ `9300`（transport）。
-- 默认资源请求较大（每节点约 2C4G + JVM 1G），小规格集群可按需调低 `resources` / `heapSize`。
+- 默认 `resources` 为 requests 与 limits 各 cpu `1000m` / memory `2Gi`，`esJavaOpts`（JVM 堆）默认为空，小规格集群可按需调低 `resources` 或设置 `esJavaOpts`。
 
 ## 参考
 

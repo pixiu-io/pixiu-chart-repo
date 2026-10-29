@@ -10,13 +10,13 @@
 | 来源 | [ot-container-kit.github.io/helm-charts](https://ot-container-kit.github.io/helm-charts/) 官方 Helm 仓库最新稳定版 |
 | Pixiu 默认调整 | 镜像已替换为华为云 SWR mirror（`swr.cn-north-4.myhuaweicloud.com/pixiu-public/redis-operator/`） |
 
-> 本 chart 只部署 **Redis Operator** 本体（含 webhook 自签证书 init 容器，同镜像）。安装后通过 `Redis` / `RedisCluster` / `RedisReplication` / `RedisSentinel` CR 创建 Redis 实例，实例镜像由 CR 配置决定，不随本 chart 默认拉取。
+> 本 chart 只部署 **Redis Operator** 本体（默认 `webhook: false`，不渲染 webhook Service/证书资源）。安装后通过 `Redis` / `RedisCluster` / `RedisReplication` / `RedisSentinel` CR 创建 Redis 实例，实例镜像由 CR 配置决定，不随本 chart 默认拉取。
 
 ## 默认会拉取的镜像
 
 | 组件 | 原生镜像 | mirror 镜像 | 说明 |
 | --- | --- | --- | --- |
-| redis-operator | `quay.io/opstree/redis-operator:v0.27.0` | `swr.cn-north-4.myhuaweicloud.com/pixiu-public/redis-operator/redis-operator:v0.27.0` | Operator Deployment；init-config init 容器（webhook 证书生成）同镜像同 tag |
+| redis-operator | `quay.io/opstree/redis-operator:v0.27.0` | `swr.cn-north-4.myhuaweicloud.com/pixiu-public/redis-operator/redis-operator:v0.27.0` | Operator Deployment（`webhook=true` 时另启用 webhook Service 与证书资源，不引入新镜像） |
 
 ## 默认不启用（可选）
 
