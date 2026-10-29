@@ -93,7 +93,7 @@ docker.io/kiwigrid/k8s-sidecar:2.5.0
 
 1. **安装失败：缺少 schema_config** —— 现象：`execution error at (loki/templates/validate.yaml): You must provide a schema_config`。默认 values 不带，必须显式提供 `loki.schemaConfig`（上例 tsdb + v13 + filesystem）。卸载失败 release 后同名重装即可。
 2. **多租户鉴权**：loki 默认 `auth_enabled: true`，gateway 要求 `X-Scope-OrgID`。promtail 等客户端推送需配 `tenant_id`（见 [promtail-images.md](./promtail-images.md)），查询 API 同样要带 `X-Scope-OrgID: <租户>`，否则 401 no org id。
-3. **Longhorn 卷 faulted（insufficient storage）**：单节点集群同时装 loki(5Gi)+ES(5Gi) 超过 Longhorn 可调度余量导致卷 faulted，属平台级问题（含解决方式），见 [appstore-chart-guide.md](./appstore-chart-guide.md)「平台级踩坑」。
+3. **Longhorn 卷 faulted（insufficient storage）**：Longhorn 按**卷声明大小**做调度预检（非实际占用），磁盘 maximum 39.3GiB、storageReserved 30%（11.8GiB）→ 可调度上限 27.5GiB，已有卷（minio 10+10、loki 5、test 1）+ 新卷 5Gi 超限即 faulted，Pod 卡 `FailedAttachVolume ... rpc error: code = Aborted`。解决：调低节点磁盘保留（PATCH `longhorn.io/v1beta2 .../nodes/<node>` 的 `spec.disks.<id>.storageReserved`，本次改为 10%≈3.9GiB），Longhorn 自动恢复调度、重建副本。**经验：单节点小磁盘集群装大容量应用前，先看 Longhorn「可调度余量」而不是剩余磁盘；新应用 PVC 5Gi 起步。**
 
 ### 验证结果
 

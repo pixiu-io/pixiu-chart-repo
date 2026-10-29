@@ -2,7 +2,7 @@
 
 - **分类**：应用商店 / Chart 管理
 - **涉及组件**：应用商店（charts / chart_versions）、Helm Chart 包、镜像仓库
-- **最后更新**：2026-10-29
+- **最后更新**：2026-10-23
 
 ## 适用范围
 
@@ -133,72 +133,6 @@ python3 scripts/check-chart-tgz.py --fix charts/velero-12.2.1.tgz
 - 需 root/admin；存在进行中的安装/升级/卸载任务时拒绝删除（409）
 - 删除会移除该 chart 的所有版本记录与存储中的包文件
 
-## 安装与验证实操（平台 API）
-
-应用商店安装为**异步任务**：入队即返回，通过 installs 接口轮询结果。以下为实测有效流程（2026-10-29，console.cloud.pixiuio.com，集群 pixiu-fmqyrwig）。
-
-### 登录获取 token（有效期约 1 小时）
-
-```bash
-TOKEN=$(curl -s -X POST https://console.cloud.pixiuio.com/pixiu/auth/login \
-  -H 'Content-Type: application/json' \
-  -d '{"name":"admin","password":"<密码>"}' | python3 -c \
-  'import sys,json;print(json.load(sys.stdin)["result"]["token"])')
-```
-
-后续请求统一带 `Authorization: Bearer $TOKEN`。
-
-### 安装（异步）
-
-```bash
-CLUSTER=pixiu-fmqyrwig
-curl -X POST "https://console.cloud.pixiuio.com/pixiu/apps/clusters/$CLUSTER/namespaces/pixiu-system/releases" \
-  -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json' \
-  -d '{"chart_id": <ID>, "release_name": "loki", "version": "7.5.0", "values": { ... }}'
-```
-
-轮询状态：
-
-```bash
-curl -s "https://console.cloud.pixiuio.com/pixiu/apps/clusters/$CLUSTER/installs" \
-  -H "Authorization: Bearer $TOKEN"
-# deploy_status: pending → installing → success / failed（failed 时 message 有原因）
-```
-
-卸载：`DELETE .../namespaces/<ns>/releases/<release_name>`（异步；失败记录删除后可同名重装）。
-
-集群内验证走平台 K8s 代理：`https://console.cloud.pixiuio.com/pixiu/proxy/$CLUSTER/api/v1/namespaces/<ns>/pods`。
-
-### 平台级踩坑（多 chart 安装实测）
-
-1. **chart 包文件丢失（`chart package not found: stat /etc/pixiu/appstore/charts/xxx.tgz`）**：后端多副本部署，DB 共享但 chart 目录是实例本地磁盘；上传落在 A 实例、安装任务由 B 实例执行时找不到文件。解决：**「删 Chart → 重传 → 重装」循环重试**，直到上传与任务执行落在同一实例。建议平台侧把 appstore data_dir 迁共享存储（NFS/S3/OSS）。
-2. **Longhorn 卷 faulted（`precheck new replica failed: insufficient storage`）**：Longhorn 按**卷声明大小**做调度预检，不看实际占用。磁盘 39.3GiB、storageReserved 30%（11.8GiB）→ 可调度上限 27.5GiB；已有卷 + 新卷超限即 faulted，Pod 卡 `FailedAttachVolume`。解决：调低磁盘保留（PATCH `longhorn.io/v1beta2 .../nodes/<node>` 的 `spec.disks.<id>.storageReserved`），Longhorn 自动恢复。**单节点小磁盘装大容量应用前，先看可调度余量而不是剩余磁盘；新应用 PVC 5Gi 起步。**
-3. **release 命名空间与实际部署不一致**：平台安装记录显示 `pixiu-system`（helm release secret 也在 pixiu-system），但部分 chart（elasticsearch、minio）的资源实际创建在 `default`。验证 Pod 时别只盯记录里的命名空间（`kubectl get sts -A`）。
-4. **节点 requests 打满（`0/1 nodes are available: Insufficient memory`）**：实际用量可能很低，但各 Pod **requests 汇总**占满 allocatable 即调度失败。安装前核对 requests 余量；必要时压低应用 requests（注意 patch 的 requests 会被下次 helm upgrade 覆盖）。
-5. **经 K8s 服务代理测 HTTPS 应用时 Authorization 头冲突**：`Authorization: Bearer` 头被 apiserver 消费，无法同时给后端应用传 Basic auth。解决：起一次性 Job（用集群内已有镜像）在集群内 curl 验证，再经代理读 Pod 日志取结果。
-
-### 实测结果（loki / promtail / elasticsearch 三件套）
-
-loki 的默认 values 与 Chart 级踩坑见 [loki-images.md](./loki-images.md)「应用商店安装实录」章节。三个应用均 deployed 且功能验证通过：Loki 网关查询正常并收到 promtail 日志流（push 204）；ES `_cluster/health` = green（https + basic auth）。
-
-promtail 与 elasticsearch 安装时需传入的 values 实测参考：
-
-```json
-// promtail 6.17.1：Loki 多租户下必须带 tenant_id，否则推送 401 no org id
-{"config": {"clients": [
-  {"url": "http://loki-gateway/loki/api/v1/push", "tenant_id": "pixiu"}
-]}}
-```
-
-```json
-// elasticsearch 8.5.1：单节点瘦身（默认 3 副本 + 2C4G + 30Gi 在小规格集群装不下）
-{"replicas": 1, "minimumMasterNodes": 1, "esJavaOpts": "-Xms512m -Xmx512m",
- "resources": {"requests": {"cpu": "200m", "memory": "512Mi"}, "limits": {"cpu": "1", "memory": "2Gi"}},
- "volumeClaimTemplate": {"resources": {"requests": {"storage": "5Gi"}}}}
-```
-
-> 后续将 values 层面的修复内化到了 loki Chart 默认值（SingleBinary + filesystem + schemaConfig + 5Gi，见 loki-images.md「Pixiu 默认调整」），新装 loki 已无需传自定义 values；**promtail、elasticsearch 保持上游默认 values**，按上方实测参考传 values。
-
 ## 验证方式
 
 1. 本地：`python3 scripts/check-chart-tgz.py <包>`（无 `._*` / `.DS_Store` / `__MACOSX`）
@@ -218,9 +152,6 @@ promtail 与 elasticsearch 安装时需传入的 values 实测参考：
 | 上传返回 413 `chart package exceeds max size N MB` | 超过 `appstore.max_upload_mb` | 精简包（剔除无关文件）或调大配置 |
 | 上传返回 409 `chart X version Y already exists` | 同版本重复 | 提升 `Chart.yaml` 的 version |
 | 上传返回 409 `identical chart package already exists as version Z` | 包内容与历史版本完全相同（sha256 一致） | 确认是否改了内容；仅改版本号不算新包 |
-| 安装报 `chart package not found: stat /etc/pixiu/appstore/charts/xxx.tgz` | 多副本后端 chart 目录为实例本地盘，上传与安装执行不在同一实例 | 「删 Chart → 重传 → 重装」循环重试；根治需迁共享存储 |
-| Pod 卡 `FailedAttachVolume`，Longhorn 卷 `robustness=faulted`（insufficient storage） | Longhorn 按卷声明大小预检，可调度余量不足 | 调低节点磁盘 storageReserved；新应用 PVC 5Gi 起步 |
-| 安装报 `0/1 nodes are available: Insufficient memory` | Pod requests 汇总占满 allocatable（与实际用量无关） | 压低应用 requests / 释放其它组件 requests / 扩节点 |
 | 安装报 `an error occurred while checking for chart dependencies ...` | 子 chart 未打入 `charts/` | `helm dependency build` 后重新打包上传 |
 | 安装后 Pod `ImagePullBackOff` | 镜像未推送到目标集群可达仓库 | 按 mirror 清单推送并修正 values |
 | 删除返回 409 `has N in-flight install operation(s)` | 仍有进行中的任务 | 等待任务结束后重试 |
