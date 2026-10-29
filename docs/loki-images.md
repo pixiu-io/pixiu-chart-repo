@@ -8,9 +8,9 @@
 | Chart 版本 | **7.5.0**（仓库文件：`charts/loki-7.5.0.tgz`） |
 | appVersion | **3.6.16**（Chart 内默认 Loki Server 镜像 tag 为 3.6.11） |
 | 来源 | [grafana/helm-charts](https://github.com/grafana/helm-charts)（官方 Helm 仓库） |
-| Pixiu 默认调整 | 所有镜像已替换为华为云 SWR mirror（`swr.cn-north-4.myhuaweicloud.com/pixiu-public/grafana/`） |
+| Pixiu 默认调整 | 镜像替换为华为云 SWR mirror；默认存储 s3 → filesystem（PVC），配套 SingleBinary 1 副本 + replication_factor 1 + 内置 schemaConfig（PVC 大小保持上游默认 10Gi） |
 
-> 下列镜像按本仓库 Chart 包内 **默认 values** 整理（`deploymentMode: SingleBinary`，内置 memcached 缓存默认开启）。Loki 7.x 默认部署需要配置存储后端（对象存储或 filesystem）后才能正常安装。
+> 下列镜像按本仓库 Chart 包内 **默认 values** 整理（`deploymentMode: SingleBinary`，内置 memcached 缓存默认开启）。默认 values 已内置 filesystem（PVC）存储与 schemaConfig，开箱即装；使用对象存储的集群可改回 s3 并配置 bucketNames。
 
 ## 默认会拉取的镜像
 
@@ -55,7 +55,46 @@ docker.io/kiwigrid/k8s-sidecar:2.5.0
 
 - Chart 7.5.0 为 grafana 官方仓库当前最新稳定版。
 - Loki 7.x 单二进制模式（SingleBinary）默认带 1 个 canary、gateway 与内置 memcached；如需最小化部署，可关闭 `gateway`、`lokiCanary`、`test`、`memcached`。
+- Pixiu 默认调整：默认存储 `s3` → `filesystem`（PVC），配套 `deploymentMode: SingleBinary` 1 副本、write/read/backend 0 副本、`replication_factor: 1`、内置 `schemaConfig`（tsdb/v13/filesystem）。**PVC 大小保持上游默认 10Gi**；单节点小磁盘集群安装前先确认 Longhorn「可调度余量」足够（见下方实录）。
+- 需要大规模部署时：改回 `SimpleScalable`/`Distributed` 模式并将存储改回 s3/oss，调高 write/read/backend 副本与 replication_factor。
 - Promtail 通过独立的 `promtail` chart（同仓库 `charts/promtail-6.17.1.tgz`）部署，作为 Loki 的日志采集端。
+- 应用商店安装实录见下方「应用商店安装实录」章节。
+
+## 应用商店安装实录（2026-10-29，pixiu-dev 单节点）
+
+平台安装记录：`pixiu-system`，deploy_status=success / deployed。
+
+### 实测通过的安装 values（已内化为 Chart 默认值，开箱即装；PVC 大小保持上游 10Gi）
+
+```json
+{
+  "deploymentMode": "SingleBinary",
+  "singleBinary": {"replicas": 1, "persistence": {"enabled": true, "size": "5Gi"}},
+  "write": {"replicas": 0}, "read": {"replicas": 0}, "backend": {"replicas": 0},
+  "loki": {
+    "commonConfig": {"replication_factor": 1},
+    "storage": {"type": "filesystem"},
+    "schemaConfig": {"configs": [{
+      "from": "2024-01-01", "store": "tsdb", "object_store": "filesystem",
+      "schema": "v13", "index": {"prefix": "loki_index_", "period": "24h"}
+    }]}
+  },
+  "monitoring": {"enabled": false},
+  "lokiCanary": {"enabled": false},
+  "test": {"enabled": false}
+}
+```
+
+### 踩坑与解决
+
+1. **安装失败：缺少 schema_config** —— 现象：`execution error at (loki/templates/validate.yaml): You must provide a schema_config`。上游默认 values 不带，本仓库 Chart 已内置 `loki.schemaConfig`（tsdb + v13 + filesystem）。
+2. **多租户鉴权**：loki 默认 `auth_enabled: true`，gateway 要求 `X-Scope-OrgID`。promtail 等客户端推送需配 `tenant_id`（见 [promtail-images.md](./promtail-images.md)），查询 API 同样要带 `X-Scope-OrgID: <租户>`，否则 401 no org id。
+3. **Longhorn 卷 faulted（insufficient storage）**：Longhorn 按**卷声明大小**做调度预检（非实际占用），磁盘 maximum 39.3GiB、storageReserved 30%（11.8GiB）→ 可调度上限 27.5GiB，已有卷（minio 10+10、loki 5、test 1）+ 新卷 5Gi 超限即 faulted，Pod 卡 `FailedAttachVolume ... rpc error: code = Aborted`。解决：调低节点磁盘保留（PATCH `longhorn.io/v1beta2 .../nodes/<node>` 的 `spec.disks.<id>.storageReserved`，本次改为 10%≈3.9GiB），Longhorn 自动恢复调度、重建副本。**经验：单节点小磁盘集群装大容量应用前，先看 Longhorn「可调度余量」而不是剩余磁盘；新应用 PVC 5Gi 起步。**
+
+### 验证结果
+
+- Pod：loki-0 / loki-gateway / loki-chunks-cache-0 / loki-results-cache-0 全部 Running 且 Ready。
+- 经平台 K8s 服务代理查 `/loki/api/v1/labels`（带 X-Scope-OrgID）返回 app/container/namespace/pod 等标签；`query_range` 能查到 promtail 采集的真实容器日志（含 gateway 自身 access log，promtail push 204）。
 
 ## 参考
 
