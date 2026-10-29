@@ -179,9 +179,25 @@ curl -s "https://console.cloud.pixiuio.com/pixiu/apps/clusters/$CLUSTER/installs
 
 ### 实测结果（loki / promtail / elasticsearch 三件套）
 
-各 Chart 的安装 values 与 Chart 级踩坑见对应镜像文档的「应用商店安装实录」章节：[loki-images.md](./loki-images.md)、[promtail-images.md](./promtail-images.md)、[elasticsearch-images.md](./elasticsearch-images.md)。三个应用均 deployed 且功能验证通过：Loki 网关查询正常并收到 promtail 日志流（push 204）；ES `_cluster/health` = green（https + basic auth）。
+loki 的默认 values 与 Chart 级踩坑见 [loki-images.md](./loki-images.md)「应用商店安装实录」章节。三个应用均 deployed 且功能验证通过：Loki 网关查询正常并收到 promtail 日志流（push 204）；ES `_cluster/health` = green（https + basic auth）。
 
-> 后续将 values 层面的修复内化到了 Chart 默认值（loki：SingleBinary + filesystem + schemaConfig + 5Gi），新装 loki 已无需传自定义 values，见 loki-images.md「Pixiu 默认调整」。**promtail、elasticsearch 保持上游默认 values**（安装时需按各自「应用商店安装实录」传 values：promtail 的 tenant_id、ES 的单节点瘦身配置）。
+promtail 与 elasticsearch 安装时需传入的 values 实测参考：
+
+```json
+// promtail 6.17.1：Loki 多租户下必须带 tenant_id，否则推送 401 no org id
+{"config": {"clients": [
+  {"url": "http://loki-gateway/loki/api/v1/push", "tenant_id": "pixiu"}
+]}}
+```
+
+```json
+// elasticsearch 8.5.1：单节点瘦身（默认 3 副本 + 2C4G + 30Gi 在小规格集群装不下）
+{"replicas": 1, "minimumMasterNodes": 1, "esJavaOpts": "-Xms512m -Xmx512m",
+ "resources": {"requests": {"cpu": "200m", "memory": "512Mi"}, "limits": {"cpu": "1", "memory": "2Gi"}},
+ "volumeClaimTemplate": {"resources": {"requests": {"storage": "5Gi"}}}}
+```
+
+> 后续将 values 层面的修复内化到了 loki Chart 默认值（SingleBinary + filesystem + schemaConfig + 5Gi，见 loki-images.md「Pixiu 默认调整」），新装 loki 已无需传自定义 values；**promtail、elasticsearch 保持上游默认 values**，按上方实测参考传 values。
 
 ## 验证方式
 
