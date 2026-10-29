@@ -8,7 +8,7 @@
 | Chart 版本 | **6.17.1**（仓库文件：`charts/promtail-6.17.1.tgz`） |
 | appVersion | **3.5.1**（Promtail 版本） |
 | 来源 | [grafana/helm-charts](https://github.com/grafana/helm-charts)（官方 Helm 仓库） |
-| Pixiu 默认调整 | 镜像替换为华为云 SWR mirror；默认 values 增加 `config.clients[0].tenant_id: pixiu`（Loki 多租户必填） |
+| Pixiu 默认调整 | 镜像已替换为华为云 SWR mirror（`swr.cn-north-4.myhuaweicloud.com/pixiu-public/grafana/`） |
 
 > 下列镜像按本仓库 Chart 包内 **默认 values** 整理。Promtail 以 DaemonSet 方式在每个节点采集容器日志，`lokiUrl` 需指向 Loki 的 push 端点。
 
@@ -49,9 +49,9 @@ ghcr.io/jimmidyson/configmap-reload:v0.12.0
 
 ## 应用商店安装实录（2026-10-29，pixiu-dev 单节点）
 
-平台安装记录：`pixiu-system`，deploy_status=success / deployed。**tenant_id 已内化为 Chart 默认值（开箱即装）**，以下为调整前的手工配置存档。
+平台安装记录：`pixiu-system`，deploy_status=success / deployed。默认 values 即可安装成功，但**必须给 client 配 tenant_id**，否则日志推送被 Loki 拒收。
 
-### 实测通过的安装 values（已内化为默认值，开箱即装；以下为调整前手工 values 存档）
+### 实测通过的安装 values（默认值 + tenant_id）
 
 ```json
 {
@@ -63,7 +63,8 @@ ghcr.io/jimmidyson/configmap-reload:v0.12.0
 
 ### 踩坑与解决
 
-1. **推送 401 no org id**：loki 默认 `auth_enabled: true`，gateway 要求 `X-Scope-OrgID`，上游默认配置不带租户头。解决：Chart 默认 values 已加 `config.clients[0].tenant_id: pixiu`（历史安装是事后 patch Secret `promtail` 再删 Pod 重建，**该方式会被 promtail 升级覆盖**，现已内化到 Chart 无此问题）。
+1. **推送 401 no org id**：loki 默认 `auth_enabled: true`，gateway 要求 `X-Scope-OrgID`，promtail 默认配置不带租户头。解决：在安装 values 的 `config.clients[0]` 加 `tenant_id: pixiu`（或在安装后 patch Secret `promtail` 的 `promtail.yaml` 再删 Pod 重建）。
+   > 注意：安装后直接 patch Secret 的方式**会被 promtail 升级覆盖**，重装/升级时务必把 `tenant_id` 写进安装 values。
 2. **lokiUrl 默认值**：默认配置 `http://loki-gateway/loki/api/v1/push`，与 loki 同命名空间（pixiu-system）安装即可直接连通，无需改地址。
 
 ### 验证结果
