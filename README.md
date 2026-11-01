@@ -37,7 +37,6 @@
 | 组件 | Chart | 仓库版本 | appVersion | 详情 |
 | --- | --- | --- | --- | --- |
 | [MySQL Operator](docs/components/mysql-operator.md) | mysql-operator | **2.3.1**<br><sub>charts/mysql-operator-2.3.1.tgz</sub> | **26.10.0-2.3.1** | <span style="font-size:14px">[查看](docs/components/mysql-operator.md)</span> |
-| [Redis Operator](docs/components/redis-operator.md) | redis-operator | **0.27.0**<br><sub>charts/redis-operator-0.27.0.tgz</sub> | **0.27.0** | <span style="font-size:14px">[查看](docs/components/redis-operator.md)</span> |
 
 ## 镜像仓库
 
