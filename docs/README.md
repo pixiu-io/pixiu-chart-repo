@@ -19,7 +19,6 @@
 | DOC-009 | Cert-manager 镜像列表 | 应用商店 / 镜像 | [cert-manager-images.md](./cert-manager-images.md) |
 | DOC-010 | Longhorn 镜像列表 | 应用商店 / 镜像 | [longhorn-images.md](./longhorn-images.md) |
 | DOC-011 | Elasticsearch 镜像列表 | 应用商店 / 镜像 | [elasticsearch-images.md](./elasticsearch-images.md) |
-| DOC-012 | Redis Operator 镜像列表 | 应用商店 / 镜像 | [redis-operator-images.md](./redis-operator-images.md) |
 | DOC-013 | MySQL Operator 镜像列表 | 应用商店 / 镜像 | [mysql-operator-images.md](./mysql-operator-images.md) |
 | DOC-014 | Harbor 镜像列表 | 应用商店 / 镜像 | [harbor-images.md](./harbor-images.md) |
 
@@ -37,7 +36,6 @@
 | DOC-022 | Ingress NGINX 组件详情 | 网络与安全 | [components/ingress-nginx.md](./components/ingress-nginx.md) |
 | DOC-023 | Cert-manager 组件详情 | 网络与安全 | [components/cert-manager.md](./components/cert-manager.md) |
 | DOC-024 | MySQL Operator 组件详情 | 数据库与中间件 | [components/mysql-operator.md](./components/mysql-operator.md) |
-| DOC-025 | Redis Operator 组件详情 | 数据库与中间件 | [components/redis-operator.md](./components/redis-operator.md) |
 | DOC-026 | Harbor 组件详情 | 镜像仓库 | [components/harbor.md](./components/harbor.md) |
 | DOC-027 | GPU Operator 组件详情 | GPU 与加速 | [components/gpu-operator.md](./components/gpu-operator.md) |
 
