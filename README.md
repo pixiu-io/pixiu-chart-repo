@@ -23,6 +23,7 @@
 | --- | --- | --- | --- | --- |
 | [Longhorn](docs/components/longhorn.md) | longhorn | **1.13.0**<br><sub>charts/longhorn-1.13.0.tgz</sub><br>**1.12.1**<br><sub>charts/longhorn-1.12.1.tgz</sub> | **v1.13.0** / **v1.12.1** | <span style="font-size:14px">[查看](docs/components/longhorn.md)</span> |
 | [MinIO](docs/components/minio.md) | minio | **5.4.0**<br><sub>charts/minio-5.4.0.tgz</sub> | **RELEASE.2025-09-07T16-13-09Z** | <span style="font-size:14px">[查看](docs/components/minio.md)</span> |
+| [csi-driver-nfs](docs/components/csi-driver-nfs.md) | csi-driver-nfs | **4.13.6**<br><sub>charts/csi-driver-nfs-4.13.6.tgz</sub> | **4.13.6** | <span style="font-size:14px">[查看](docs/components/csi-driver-nfs.md)</span> |
 | [Velero](docs/components/velero.md) | velero | **12.2.1**<br><sub>charts/velero-12.2.1.tgz</sub> | **1.18.2** | <span style="font-size:14px">[查看](docs/components/velero.md)</span> |
 
 ## 网络与安全
