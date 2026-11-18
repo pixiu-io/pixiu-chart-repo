@@ -19,6 +19,7 @@
 | [MySQL Exporter](docs/components/prometheus-mysql-exporter.md) | prometheus-mysql-exporter | **2.17.1**<br><sub>charts/prometheus-mysql-exporter-2.17.1.tgz</sub> | **v0.21.0** | <span style="font-size:14px">[查看](docs/components/prometheus-mysql-exporter.md)</span> |
 | [PostgreSQL Exporter](docs/components/prometheus-postgres-exporter.md) | prometheus-postgres-exporter | **8.2.5**<br><sub>charts/prometheus-postgres-exporter-8.2.5.tgz</sub> | **v0.20.1** | <span style="font-size:14px">[查看](docs/components/prometheus-postgres-exporter.md)</span> |
 | [Redis Exporter](docs/components/prometheus-redis-exporter.md) | prometheus-redis-exporter | **6.37.0**<br><sub>charts/prometheus-redis-exporter-6.37.0.tgz</sub> | **v1.97.0** | <span style="font-size:14px">[查看](docs/components/prometheus-redis-exporter.md)</span> |
+| [RabbitMQ Exporter](docs/components/prometheus-rabbitmq-exporter.md) | prometheus-rabbitmq-exporter | **2.1.3**<br><sub>charts/prometheus-rabbitmq-exporter-2.1.3.tgz</sub> | **1.0.0** | <span style="font-size:14px">[查看](docs/components/prometheus-rabbitmq-exporter.md)</span> |
 
 ## 存储与备份
 
