@@ -25,6 +25,7 @@
 | DOC-030 | MySQL Exporter 镜像列表 | 应用商店 / 镜像 | [prometheus-mysql-exporter-images.md](./prometheus-mysql-exporter-images.md) |
 | DOC-031 | PostgreSQL Exporter 镜像列表 | 应用商店 / 镜像 | [prometheus-postgres-exporter-images.md](./prometheus-postgres-exporter-images.md) |
 | DOC-032 | Redis Exporter 镜像列表 | 应用商店 / 镜像 | [prometheus-redis-exporter-images.md](./prometheus-redis-exporter-images.md) |
+| DOC-033 | RabbitMQ Exporter 镜像列表 | 应用商店 / 镜像 | [prometheus-rabbitmq-exporter-images.md](./prometheus-rabbitmq-exporter-images.md) |
 
 ## 组件详情
 
@@ -46,6 +47,7 @@
 | DOC-035 | MySQL Exporter 组件详情 | 可观测性 | [components/prometheus-mysql-exporter.md](./components/prometheus-mysql-exporter.md) |
 | DOC-036 | PostgreSQL Exporter 组件详情 | 可观测性 | [components/prometheus-postgres-exporter.md](./components/prometheus-postgres-exporter.md) |
 | DOC-037 | Redis Exporter 组件详情 | 可观测性 | [components/prometheus-redis-exporter.md](./components/prometheus-redis-exporter.md) |
+| DOC-038 | RabbitMQ Exporter 组件详情 | 可观测性 | [components/prometheus-rabbitmq-exporter.md](./components/prometheus-rabbitmq-exporter.md) |
 
 ## 工具脚本
 
