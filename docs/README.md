@@ -22,6 +22,7 @@
 | DOC-013 | MySQL Operator 镜像列表 | 应用商店 / 镜像 | [mysql-operator-images.md](./mysql-operator-images.md) |
 | DOC-014 | Harbor 镜像列表 | 应用商店 / 镜像 | [harbor-images.md](./harbor-images.md) |
 | DOC-028 | csi-driver-nfs 镜像列表 | 应用商店 / 镜像 | [csi-driver-nfs-images.md](./csi-driver-nfs-images.md) |
+| DOC-030 | MySQL Exporter 镜像列表 | 应用商店 / 镜像 | [prometheus-mysql-exporter-images.md](./prometheus-mysql-exporter-images.md) |
 
 ## 组件详情
 
@@ -40,6 +41,7 @@
 | DOC-026 | Harbor 组件详情 | 镜像仓库 | [components/harbor.md](./components/harbor.md) |
 | DOC-027 | GPU Operator 组件详情 | GPU 与加速 | [components/gpu-operator.md](./components/gpu-operator.md) |
 | DOC-029 | csi-driver-nfs 组件详情 | 存储与备份 | [components/csi-driver-nfs.md](./components/csi-driver-nfs.md) |
+| DOC-035 | MySQL Exporter 组件详情 | 可观测性 | [components/prometheus-mysql-exporter.md](./components/prometheus-mysql-exporter.md) |
 
 ## 工具脚本
 
