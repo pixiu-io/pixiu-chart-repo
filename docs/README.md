@@ -1,6 +1,6 @@
 # 文档索引
 
-> 最后更新：2026-11-09　|　维护：平台组
+> 最后更新：2026-11-19　|　维护：平台组
 
 每个主题对应一个独立 Markdown 文档，本文件仅作索引。
 
@@ -27,6 +27,7 @@
 | DOC-032 | Redis Exporter 镜像列表 | 应用商店 / 镜像 | [prometheus-redis-exporter-images.md](./prometheus-redis-exporter-images.md) |
 | DOC-033 | RabbitMQ Exporter 镜像列表 | 应用商店 / 镜像 | [prometheus-rabbitmq-exporter-images.md](./prometheus-rabbitmq-exporter-images.md) |
 | DOC-034 | Elasticsearch Exporter 镜像列表 | 应用商店 / 镜像 | [prometheus-elasticsearch-exporter-images.md](./prometheus-elasticsearch-exporter-images.md) |
+| DOC-040 | MongoDB Exporter 镜像列表 | 应用商店 / 镜像 | [prometheus-mongodb-exporter-images.md](./prometheus-mongodb-exporter-images.md) |
 
 ## 组件详情
 
@@ -50,6 +51,7 @@
 | DOC-037 | Redis Exporter 组件详情 | 可观测性 | [components/prometheus-redis-exporter.md](./components/prometheus-redis-exporter.md) |
 | DOC-038 | RabbitMQ Exporter 组件详情 | 可观测性 | [components/prometheus-rabbitmq-exporter.md](./components/prometheus-rabbitmq-exporter.md) |
 | DOC-039 | Elasticsearch Exporter 组件详情 | 可观测性 | [components/prometheus-elasticsearch-exporter.md](./components/prometheus-elasticsearch-exporter.md) |
+| DOC-041 | MongoDB Exporter 组件详情 | 可观测性 | [components/prometheus-mongodb-exporter.md](./components/prometheus-mongodb-exporter.md) |
 
 ## 工具脚本
 

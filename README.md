@@ -21,6 +21,7 @@
 | [Redis Exporter](docs/components/prometheus-redis-exporter.md) | prometheus-redis-exporter | **6.37.0**<br><sub>charts/prometheus-redis-exporter-6.37.0.tgz</sub> | **v1.97.0** | <span style="font-size:14px">[查看](docs/components/prometheus-redis-exporter.md)</span> |
 | [RabbitMQ Exporter](docs/components/prometheus-rabbitmq-exporter.md) | prometheus-rabbitmq-exporter | **2.1.3**<br><sub>charts/prometheus-rabbitmq-exporter-2.1.3.tgz</sub> | **1.0.0** | <span style="font-size:14px">[查看](docs/components/prometheus-rabbitmq-exporter.md)</span> |
 | [Elasticsearch Exporter](docs/components/prometheus-elasticsearch-exporter.md) | prometheus-elasticsearch-exporter | **7.5.0**<br><sub>charts/prometheus-elasticsearch-exporter-7.5.0.tgz</sub> | **v1.11.0** | <span style="font-size:14px">[查看](docs/components/prometheus-elasticsearch-exporter.md)</span> |
+| [MongoDB Exporter](docs/components/prometheus-mongodb-exporter.md) | prometheus-mongodb-exporter | **3.23.2**<br><sub>charts/prometheus-mongodb-exporter-3.23.2.tgz</sub> | **0.54.0** | <span style="font-size:14px">[查看](docs/components/prometheus-mongodb-exporter.md)</span> |
 
 ## 存储与备份
 
