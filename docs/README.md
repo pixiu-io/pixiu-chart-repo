@@ -1,6 +1,6 @@
 # 文档索引
 
-> 最后更新：2026-10-29　|　维护：平台组
+> 最后更新：2026-11-09　|　维护：平台组
 
 每个主题对应一个独立 Markdown 文档，本文件仅作索引。
 
@@ -21,6 +21,7 @@
 | DOC-011 | Elasticsearch 镜像列表 | 应用商店 / 镜像 | [elasticsearch-images.md](./elasticsearch-images.md) |
 | DOC-013 | MySQL Operator 镜像列表 | 应用商店 / 镜像 | [mysql-operator-images.md](./mysql-operator-images.md) |
 | DOC-014 | Harbor 镜像列表 | 应用商店 / 镜像 | [harbor-images.md](./harbor-images.md) |
+| DOC-028 | csi-driver-nfs 镜像列表 | 应用商店 / 镜像 | [csi-driver-nfs-images.md](./csi-driver-nfs-images.md) |
 
 ## 组件详情
 
@@ -38,6 +39,7 @@
 | DOC-024 | MySQL Operator 组件详情 | 数据库与中间件 | [components/mysql-operator.md](./components/mysql-operator.md) |
 | DOC-026 | Harbor 组件详情 | 镜像仓库 | [components/harbor.md](./components/harbor.md) |
 | DOC-027 | GPU Operator 组件详情 | GPU 与加速 | [components/gpu-operator.md](./components/gpu-operator.md) |
+| DOC-029 | csi-driver-nfs 组件详情 | 存储与备份 | [components/csi-driver-nfs.md](./components/csi-driver-nfs.md) |
 
 ## 工具脚本
 
