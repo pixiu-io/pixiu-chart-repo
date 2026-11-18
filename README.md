@@ -17,6 +17,7 @@
 | [Promtail](docs/components/promtail.md) | promtail | **6.17.1**<br><sub>charts/promtail-6.17.1.tgz</sub> | **3.5.1** | <span style="font-size:14px">[查看](docs/components/promtail.md)</span> |
 | [Elasticsearch](docs/components/elasticsearch.md) | elasticsearch | **8.5.1**<br><sub>charts/elasticsearch-8.5.1.tgz</sub> | **8.5.1** | <span style="font-size:14px">[查看](docs/components/elasticsearch.md)</span> |
 | [MySQL Exporter](docs/components/prometheus-mysql-exporter.md) | prometheus-mysql-exporter | **2.17.1**<br><sub>charts/prometheus-mysql-exporter-2.17.1.tgz</sub> | **v0.21.0** | <span style="font-size:14px">[查看](docs/components/prometheus-mysql-exporter.md)</span> |
+| [PostgreSQL Exporter](docs/components/prometheus-postgres-exporter.md) | prometheus-postgres-exporter | **8.2.5**<br><sub>charts/prometheus-postgres-exporter-8.2.5.tgz</sub> | **v0.20.1** | <span style="font-size:14px">[查看](docs/components/prometheus-postgres-exporter.md)</span> |
 
 ## 存储与备份
 
