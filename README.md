@@ -4,7 +4,7 @@
 
 [文档索引](docs/README.md) · [上架与打包规范](docs/appstore-chart-guide.md) · [charts/](charts)
 
-快速导航：[可观测性](#可观测性) · [存储与备份](#存储与备份) · [网络与安全](#网络与安全) · [数据库与中间件](#数据库与中间件) · [镜像仓库](#镜像仓库) · [GPU-与加速](#gpu-与加速)
+快速导航：[可观测性](#可观测性) · [存储与备份](#存储与备份) · [网络与安全](#网络与安全) · [数据库与中间件](#数据库与中间件) · [镜像仓库](#镜像仓库) · [GPU-与加速](#gpu-与加速) · [CI/CD](#cicd)
 
 # 组件列表
 
@@ -56,6 +56,12 @@
 | 组件 | Chart | 仓库版本 | appVersion | 详情 |
 | --- | --- | --- | --- | --- |
 | [GPU Operator](docs/components/gpu-operator.md) | gpu-operator | **v26.7.2**<br><sub>charts/gpu-operator-v26.7.2.tgz</sub> | **v26.7.2** | <span style="font-size:14px">[查看](docs/components/gpu-operator.md)</span> |
+
+## CI/CD
+
+| 组件 | Chart | 仓库版本 | appVersion | 详情 |
+| --- | --- | --- | --- | --- |
+| [Tekton Operator](docs/components/tekton-operator.md) | tekton-operator | **0.82.0**<br><sub>charts/tekton-operator-0.82.0.tgz</sub> | **v0.82.0** | <span style="font-size:14px">[查看](docs/components/tekton-operator.md)</span> |
 
 # 仓库约定
 
